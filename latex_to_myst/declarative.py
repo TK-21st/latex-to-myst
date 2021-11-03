@@ -43,7 +43,7 @@ def create_declarative_block(
         raise RuntimeError("Unkown error when creating declarative block") from e
 
     block_content = [
-        pf.RawInline('`'*(level+2) + '{%s} ' % block_type, format='markdown'),
+        pf.RawInline('\n' + '`'*(level+2) + '{%s} ' % block_type, format='markdown'),
         *content,
         pf.RawInline('\n' + '`'*(level+2) + '\n', format='markdown')
     ]
@@ -73,27 +73,21 @@ def declarative_level(elem: pf.Element, doc:pf.Doc, starting_level: int=0) -> in
     if is_declarative_block(elem):
         if starting_level == 0:
             pf.debug("-----------------------\n", elem)
+        starting_level += 1
     for child in elem._children:
         obj = getattr(elem, child)
         if isinstance(obj, pf.Element):
             return declarative_level(obj, doc, starting_level)
         elif isinstance(obj, pf.ListContainer):
             pf.debug("\t", starting_level, "\t", obj)
-            l = (declarative_level(item, doc, starting_level) for item in obj)
-            # We need to convert single elements to iterables, so that they
-            # can be flattened later
-            l = ((item,) if type(item) != list else item for item in l)
-            # Flatten the list, by expanding any sublists
-            # l = list(chain.from_iterable(ans))
-            return sum(list(chain.from_iterable(l)))
-            # return sum([declarative_level(item, starting_level) for item in obj])
+            return max([declarative_level(item, doc, starting_level) for item in obj])
         elif isinstance(obj, pf.DictContainer):
-            return sum([declarative_level(item, doc, starting_level) for item in obj.values()])
+            return max([declarative_level(item, doc, starting_level) for item in obj.values()])
         elif obj is None:
             pf.debug('None', starting_level, obj)
             return starting_level
         else:
             raise TypeError(type(obj))
-    if is_declarative_block(elem):
-        starting_level += 1
+    # if is_declarative_block(elem):
+    #     starting_level += 1
     return starting_level
