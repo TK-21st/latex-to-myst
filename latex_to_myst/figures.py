@@ -3,6 +3,7 @@ import re
 import numpy as np
 import typing as tp
 import panflute as pf
+from pathlib import Path
 from .declarative import *
 
 __all__ = [
@@ -31,6 +32,10 @@ def break_long_string(string, max_len=70, indent=0) -> str:
 def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Block"""
     url  = f"../{elem.url}"
+    if not Path(url).suffix:
+        url += '.*'
+    else:
+        url = url.replace(Path(url).suffix, '.*')
     label = elem.identifier
     attr = elem.attributes
     attr_str = ""
