@@ -32,15 +32,17 @@ def break_long_string(string, max_len=70, indent=0) -> str:
 def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Block"""
     url  = f"../{elem.url}"
-    if not Path(url).suffix:
-        url += '.*'
-    else:
-        url = url.replace(Path(url).suffix, '.*')
     label = elem.identifier
     attr = elem.attributes
     attr_str = ""
     for name, val in attr.items():
         _match = re.findall(r"([0-9|.]*)(\\textwidth)", val)
+        if _match:
+            if _match[0][0]:
+                val = f"{str(int(float(_match[0][0])*100))}%"
+            else:
+                val = "100%"
+        _match = re.findall(r"([0-9|.]*)(\\linewidth)", val)
         if _match:
             if _match[0][0]:
                 val = f"{str(int(float(_match[0][0])*100))}%"
