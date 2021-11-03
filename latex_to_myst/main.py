@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import re
 import panflute as pf
+from panflute.elements import Doc
 from latex_to_myst.latex_math import *
 from latex_to_myst.figures import *
 from latex_to_myst.declarative import *
@@ -11,7 +12,7 @@ def get_element_type(elem: pf.Element):
     if isinstance(elem, pf.Image):
         return "figure"
     if isinstance(elem, pf.Para):
-        if para_is_subplot(elem):
+        if elem_has_multiple_figures(elem):
             return "subfigures"
     if isinstance(elem, pf.Math):
         if elem.format == 'DisplayMath':
@@ -24,7 +25,24 @@ def get_element_type(elem: pf.Element):
         return "header"
     return None
 
+def is_isolated_label(elem, doc=None):
+    """check if element is isolated label"""
+    if not elem:
+        return False
+    if len(elem.content) == 1:
+        if isinstance(elem.content[0], pf.Span):
+            if 'label' in elem.content[0].attributes:
+                label = elem.content[0].attributes['label']
+                if pf.stringify(elem).strip(' \n\r') == f"[{label}]":
+                    return label
+    return False
+
 def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
+    if isinstance(elem, pf.Para) and is_isolated_label(elem):
+        return []
+
+    if isinstance(elem, pf.Doc):
+        return elem
     if isinstance(elem, pf.Str):
         # remove section and figure before references.
         if isinstance(elem.next, pf.Link) or (
@@ -36,14 +54,22 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
         return elem
 
     if isinstance(elem, pf.Header):
-        label = elem.identifier
-        section_labels_to_insert[elem.index] = label
+        if is_isolated_label(elem.next):
+            label = is_isolated_label(elem.next)
+        else:
+            label = elem.identifier
+        section_labels_to_insert[elem] = label
         elem.identifier = ""
         elem.classes = []
         return elem
 
     if isinstance(elem, pf.Para):
-        if para_is_subplot(elem):
+        if elem_has_multiple_figures(elem):
+            return create_subplots(elem, doc)
+        return elem
+
+    if isinstance(elem, pf.Table):
+        if elem_has_multiple_figures(elem):
             return create_subplots(elem, doc)
         return elem
 
@@ -79,9 +105,9 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
                     elif target_type in ['displaymath']:
                         return pf.RawInline("{eq}`%s`" % target, format='markdown')
                     else:
-                        pf.debug(f"WARNING. Link to target type {target_type} not understood.")
+                        pf.debug(f"[WARNING] Link to target type {target_type} not understood.")
             else:
-                pf.debug(f"WARNING. Link to target {target} not found.")
+                pf.debug(f"[WARNING] Link to target {target} not found.")
         return elem
     if isinstance(elem, pf.CodeBlock):
         elem.attributes = {}
@@ -101,9 +127,9 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
 
 def finalize(doc: pf.Doc):
     # add in title labels
-    for n, (idx, label) in enumerate(section_labels_to_insert.items()):
-        doc.content.insert(n + idx, pf.Para(pf.Str(f"({label})=")))
-
+    for n, (elem, label) in enumerate(section_labels_to_insert.items()):
+        idx =doc.content.index(elem)
+        doc.content.insert(idx, pf.Para(pf.Str(f"({label})=")))
 
 def prepare(doc: pf.Doc):
     # determine level of blocks
@@ -115,6 +141,7 @@ def prepare(doc: pf.Doc):
     doc.walk(get_level)
     doc.element_levels = block_levels
 
+    # determine labels of blocks for hyperlinks
     block_labels = {}
     def gather_labels(e, doc):
         if hasattr(e, 'identifier'):

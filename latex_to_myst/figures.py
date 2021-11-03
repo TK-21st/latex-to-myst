@@ -56,12 +56,8 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     ]
     return create_declarative_block(elem, doc, content, 'figure', pf.Span)
 
-def create_subplots(
-    elem:pf.Para, doc: pf.Doc=None
-) -> tp.Tuple[pf.Para, tp.Iterable[tp.Any]]:
+def _create_subplots_from_para(elem: pf.Para, doc):
     """Create Subplot using list-table and return table and substitutions to put in header"""
-    if not hasattr(doc.metadata, 'substitutions'):
-        doc.metadata['substitutions'] = {}
     image_ids = []
     image_content = []
     start_new_row = True
@@ -85,10 +81,57 @@ def create_subplots(
                 image_content.append(
                     pf.RawInline('  - {{%s}}\n' % image_id, format='markdown')
                 )
+    return image_content
+
+def _create_subplots_from_table(elem: pf.Table, doc):
+    """Create Subplot using list-table and return table and substitutions to put in header"""
+    start_new_row = True
+    image_content = []
+    def walk_table_of_figures(e, doc):
+        nonlocal start_new_row
+        nonlocal image_content
+        if isinstance(e, pf.TableRow):
+            start_new_row = True
+            return
+        if isinstance(e, pf.Image):
+            image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
+            if e.identifier:
+                image_id += f":{e.identifier}"
+            assert image_id not in doc.metadata['substitutions'].content
+            img = create_image(e, doc)
+            doc.metadata['substitutions'].content[image_id] = pf.MetaInlines(img)
+            if start_new_row:
+                image_content.append(
+                    pf.RawInline('* - {{%s}}\n' % image_id, format='markdown')
+                )
+                start_new_row = False
+            else:
+                image_content.append(
+                    pf.RawInline('  - {{%s}}\n' % image_id, format='markdown')
+                )
+        return
+    elem.walk(walk_table_of_figures)
+    return image_content
+
+
+def create_subplots(
+    elem:tp.Union[pf.Para, pf.Table], doc: pf.Doc=None
+) -> tp.Tuple[pf.Para, tp.Iterable[tp.Any]]:
+    """Create Subplot using list-table and return table and substitutions to put in header"""
+    if not 'substitutions' in doc.metadata:
+        doc.metadata['substitutions'] = {}
+
+    if isinstance(elem, pf.Para):
+        image_content = _create_subplots_from_para(elem, doc)
+    elif isinstance(elem, pf.Table):
+        image_content = _create_subplots_from_table(elem, doc)
+    else:
+        raise TypeError(f"Element of type {type(elem)} not supported, need to be Para or Table.")
 
     label = None
     if hasattr(elem, 'identifier'):
         label = elem.identifier
+
     caption = ""
     if hasattr(elem, 'title'):
         caption = elem.title
@@ -96,7 +139,7 @@ def create_subplots(
     content = [
         pf.RawInline(" " + caption, format="markdown"),
         pf.RawInline(
-            f'\n:label: {label}' if label is not None else '\n',
+            f'\n:label: {label}' if label else '\n',
             format='markdown'
         ),
         *image_content
