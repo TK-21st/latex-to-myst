@@ -26,10 +26,7 @@ def create_amsmath_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     else:
         label = None
 
-    # remove the label from the content of the block
-    # TODO: this hard coded removal on takes care of the numbered block name
-    # but not the name of the block.
-    elem.content[0].content[:2] = []
+    # TODO: remove the label from the content of the block
 
     content = [
         pf.Str(label) if label is not None else pf.Str(""),
@@ -41,6 +38,7 @@ def create_amsmath_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     return create_declarative_block(elem, doc, content, 'prf:%s' % block_type, pf.Para)
 
 def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
+
     content = elem.text
     label = None
     if '\label' in pf.stringify(elem):
@@ -52,4 +50,5 @@ def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
         pf.RawInline(content, format='markdown')
     ]
     block = create_declarative_block(elem, doc, content, 'math', pf.Span)
-    return pf.Span(pf.Str('\n\n'), *block.content)
+    # pf.debug(pf.Span(pf.Str('\n'), *block.content))
+    return pf.Span(pf.Str('\n'), *block.content)

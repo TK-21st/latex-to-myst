@@ -71,23 +71,17 @@ def is_declarative_block(elem: pf.Element) -> bool:
 def declarative_level(elem: pf.Element, doc:pf.Doc, starting_level: int=0) -> int:
     """Check the nested level of a declarative block"""
     if is_declarative_block(elem):
-        if starting_level == 0:
-            pf.debug("-----------------------\n", elem)
         starting_level += 1
     for child in elem._children:
         obj = getattr(elem, child)
         if isinstance(obj, pf.Element):
             return declarative_level(obj, doc, starting_level)
         elif isinstance(obj, pf.ListContainer):
-            pf.debug("\t", starting_level, "\t", obj)
             return max([declarative_level(item, doc, starting_level) for item in obj])
         elif isinstance(obj, pf.DictContainer):
             return max([declarative_level(item, doc, starting_level) for item in obj.values()])
         elif obj is None:
-            pf.debug('None', starting_level, obj)
             return starting_level
         else:
             raise TypeError(type(obj))
-    # if is_declarative_block(elem):
-    #     starting_level += 1
     return starting_level
