@@ -10,10 +10,7 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = [
-    "panflute>=2.1",
-    "numpy>=1.20"
-]
+requirements = ["panflute>=2.1", "numpy>=1.20"]
 test_requirements = ["pytest>=6.2"]
 
 setup(
