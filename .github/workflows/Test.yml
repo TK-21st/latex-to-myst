@@ -13,6 +13,11 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
+        # should test sparingly across API breaking boundaries
+        pandoc-version:
+          # earliest supported pandoc version
+          - 2.11.0.4
+          - latest
 
     steps:
     - uses: actions/checkout@v2
@@ -20,6 +25,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Download Pandoc
+      run: |
+        [[ ${{ matrix.pandoc-version }} == "latest" ]] && url="https://github.com/jgm/pandoc/releases/latest" || url="https://github.com/jgm/pandoc/releases/tag/${{ matrix.pandoc-version }}"
+        downloadUrl="https://github.com$(curl -L $url | grep -o '/jgm/pandoc/releases/download/.*-amd64\.deb')"
+        wget --no-verbose "$downloadUrl"
+        sudo dpkg -i "${downloadUrl##*/}"
+        pandoc --version
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
