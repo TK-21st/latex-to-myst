@@ -16,7 +16,7 @@ jobs:
         # should test sparingly across API breaking boundaries
         pandoc-version:
           # earliest supported pandoc version
-          - 2.11.0.4
+          - 2.11.2
           - latest
 
     steps:
