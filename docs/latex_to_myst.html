@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latex_to_myst package &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Credits" href="authors.html" />
+    <link rel="prev" title="latex_to_myst" href="modules.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="readme.html">
+   LaTeX to MyST Pandoc Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="installation.html">
+   Installation
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="modules.html">
+   latex_to_myst
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     latex_to_myst package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="authors.html">
+   Credits
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="history.html">
+   History
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/latex_to_myst.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst.cli">
+   latex_to_myst.cli module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst.directive">
+   latex_to_myst.directive module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst.figures">
+   latex_to_myst.figures module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst.latex_math">
+   latex_to_myst.latex_math module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst.main">
+   latex_to_myst.main module
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-latex_to_myst">
+   Module contents
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="latex-to-myst-package">
+<h1>latex_to_myst package<a class="headerlink" href="#latex-to-myst-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-latex_to_myst.cli">
+<span id="latex-to-myst-cli-module"></span><h2>latex_to_myst.cli module<a class="headerlink" href="#module-latex_to_myst.cli" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="latex_to_myst.cli.main">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.cli.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.cli.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main CLI Entry Point to Latex-to-Myst</p>
+<p>This entry point is invoked in the command line as a console
+script and can be invoked like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ latex2myst my_latex_file.tex my_new_markdown.md
+</pre></div>
+</div>
+<p>You can see the complete set of options by typing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ latex2myst -h
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-latex_to_myst.directive">
+<span id="latex-to-myst-directive-module"></span><h2>latex_to_myst.directive module<a class="headerlink" href="#module-latex_to_myst.directive" title="Permalink to this headline">¶</a></h2>
+<p>Collection of Helpers to create directive blocks consistent with MyST syntax</p>
+<p>The syntax for MyST <a class="reference external" href="https://jupyterbook.org/content/myst.html#directives">Directive Blocks</a> that is followed in this repository takes
+the form of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{directivename} arg1 arg2
+:key1: metadata1
+:key2: metadata2
+My directive content.
+```
+</pre></div>
+</div>
+<dl class="py function">
+<dt id="latex_to_myst.directive.create_directive_block">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.directive.</span></code><code class="sig-name descname"><span class="pre">create_directive_block</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">elem</span></em>, <em class="sig-param"><span class="pre">doc</span></em>, <em class="sig-param"><span class="pre">content</span></em>, <em class="sig-param"><span class="pre">block_type</span></em>, <em class="sig-param"><span class="pre">create_using=&lt;class</span> <span class="pre">'panflute.elements.Span'&gt;</span></em>, <em class="sig-param"><span class="pre">label=''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/directive.html#create_directive_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.directive.create_directive_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a directive block as literal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>panflute.elements.Doc</em>) – </p></li>
+<li><p><strong>content</strong> (<em>Iterable</em><em>[</em><em>panflute.base.Element</em><em>]</em>) – </p></li>
+<li><p><strong>block_type</strong> (<em>str</em>) – </p></li>
+<li><p><strong>create_using</strong> (<em>Union</em><em>[</em><em>panflute.elements.Para</em><em>, </em><em>panflute.elements.Span</em><em>]</em>) – </p></li>
+<li><p><strong>label</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[panflute.elements.Para, panflute.elements.Span]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.directive.directive_level">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.directive.</span></code><code class="sig-name descname"><span class="pre">directive_level</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/directive.html#directive_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.directive.directive_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the nested level of a directive block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>panflute.elements.Doc</em>) – </p></li>
+<li><p><strong>starting_level</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.directive.elem_has_multiple_figures">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.directive.</span></code><code class="sig-name descname"><span class="pre">elem_has_multiple_figures</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/directive.html#elem_has_multiple_figures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.directive.elem_has_multiple_figures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if an element is a subplot (subfigures)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.directive.image_in_subplot">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.directive.</span></code><code class="sig-name descname"><span class="pre">image_in_subplot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/directive.html#image_in_subplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.directive.image_in_subplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if an image node is in subplot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elem</strong> (<em>panflute.elements.Image</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.directive.is_directive_block">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.directive.</span></code><code class="sig-name descname"><span class="pre">is_directive_block</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/directive.html#is_directive_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.directive.is_directive_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if an given element is a directive block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-latex_to_myst.figures">
+<span id="latex-to-myst-figures-module"></span><h2>latex_to_myst.figures module<a class="headerlink" href="#module-latex_to_myst.figures" title="Permalink to this headline">¶</a></h2>
+<p>Figures directives</p>
+<dl class="py function">
+<dt id="latex_to_myst.figures.break_long_string">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.figures.</span></code><code class="sig-name descname"><span class="pre">break_long_string</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">70</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/figures.html#break_long_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.figures.break_long_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Break long string into shorter strings of max_len (with indent added)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – </p></li>
+<li><p><strong>max_len</strong> (<em>int</em>) – </p></li>
+<li><p><strong>indent</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.figures.create_image">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.figures.</span></code><code class="sig-name descname"><span class="pre">create_image</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/figures.html#create_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.figures.create_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Image Directive Block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.elements.Image</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>Optional</em><em>[</em><em>panflute.elements.Doc</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>panflute.elements.Span</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.figures.create_subplots">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.figures.</span></code><code class="sig-name descname"><span class="pre">create_subplots</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/figures.html#create_subplots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.figures.create_subplots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Subplot using list-table and return table and substitutions to put in header</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>Union</em><em>[</em><em>panflute.elements.Para</em><em>, </em><em>panflute.table_elements.Table</em><em>]</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>Optional</em><em>[</em><em>panflute.elements.Doc</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[panflute.elements.Para, Iterable[Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-latex_to_myst.latex_math">
+<span id="latex-to-myst-latex-math-module"></span><h2>latex_to_myst.latex_math module<a class="headerlink" href="#module-latex_to_myst.latex_math" title="Permalink to this headline">¶</a></h2>
+<p>Handle LaTeX math blocks</p>
+<p>Deals with amsthm blocks and also DisplayMath blocks and render them in formats
+that are compatible with MyST syntax.</p>
+<dl class="py function">
+<dt id="latex_to_myst.latex_math.create_amsthm_blocks">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.latex_math.</span></code><code class="sig-name descname"><span class="pre">create_amsthm_blocks</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/latex_math.html#create_amsthm_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.latex_math.create_amsthm_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directive blocks that render AMSTHM</p>
+<p>Takes advantage of <a class="reference external" href="https://github.com/executablebooks/sphinx-proof">sphinx-proof</a> sphinx extension to render
+amsthm blocks. It does the following:</p>
+<ol class="arabic simple">
+<li><p>Walk the element to see if a <cite>label{}</cite> node is found and save that
+label. Remove that label element if found.</p></li>
+<li><p>Parses the :py:func`panflute.Div`’s stringified representation to
+see if pattern like <cite>Theorem 1.1 (Theorem Name)</cite> or <cite>Example 1.1</cite> is
+encountered. Save the theorem name <cite>Theorem Name</cite> if found.</p></li>
+<li><p>Render output as a <code class="xref py py-func docutils literal notranslate"><span class="pre">panflute.Div()</span></code> element with the
+<a class="reference external" href="https://github.com/executablebooks/sphinx-proof">sphinx-proof</a> syntax.</p></li>
+</ol>
+<p>The output looks something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{prf:remark} My Remark
+:label: remark-1
+
+This is my remark.
+```
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.elements.Div</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>Optional</em><em>[</em><em>panflute.elements.Doc</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>panflute.elements.Para</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.latex_math.create_displaymath">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.latex_math.</span></code><code class="sig-name descname"><span class="pre">create_displaymath</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/latex_math.html#create_displaymath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.latex_math.create_displaymath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create DisplayMath block</p>
+<p>Create a <code class="xref py py-func docutils literal notranslate"><span class="pre">panflute.Span()</span></code> block that contains the display
+math using MyST syntax that looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{math}
+:label: my-equation
+
+a = \int_1^2 u(t) dt
+```
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.elements.Math</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>Optional</em><em>[</em><em>panflute.elements.Doc</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>panflute.elements.Span</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-latex_to_myst.main">
+<span id="latex-to-myst-main-module"></span><h2>latex_to_myst.main module<a class="headerlink" href="#module-latex_to_myst.main" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="latex_to_myst.main.action">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">action</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.action" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p></li>
+<li><p><strong>doc</strong> (<em>Optional</em><em>[</em><em>panflute.elements.Doc</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>panflute.base.Element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.main.finalize">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">finalize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#finalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.finalize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> (<em>panflute.elements.Doc</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.main.get_element_type">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">get_element_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#get_element_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.get_element_type" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>elem</strong> (<em>panflute.base.Element</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.main.is_isolated_label">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">is_isolated_label</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#is_isolated_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.is_isolated_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if element is isolated label</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.main.main">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="latex_to_myst.main.prepare">
+<code class="sig-prename descclassname"><span class="pre">latex_to_myst.main.</span></code><code class="sig-name descname"><span class="pre">prepare</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/latex_to_myst/main.html#prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#latex_to_myst.main.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> (<em>panflute.elements.Doc</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-latex_to_myst">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-latex_to_myst" title="Permalink to this headline">¶</a></h2>
+<p>Pandoc filter for converting LaTeX to MyST</p>
+</div>
+</div>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="modules.html" title="previous page">latex_to_myst</a>
+    <a class='right-next' id="next-link" href="authors.html" title="next page">Credits</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Tingkai Liu<br/>
+        
+            &copy; Copyright 2021, Tingkai Liu.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

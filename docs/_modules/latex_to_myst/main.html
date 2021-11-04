@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latex_to_myst.main &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../readme.html">
+   LaTeX to MyST Pandoc Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../installation.html">
+   Installation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../modules.html">
+   latex_to_myst
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../latex_to_myst.html">
+     latex_to_myst package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../authors.html">
+   Credits
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../history.html">
+   History
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for latex_to_myst.main</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
+<span class="kn">from</span> <span class="nn">panflute.elements</span> <span class="kn">import</span> <span class="n">Doc</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.latex_math</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.figures</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.directive</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">section_labels_to_insert</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%(levelname)8s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
+<span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_element_type"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.get_element_type">[docs]</a><span class="k">def</span> <span class="nf">get_element_type</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;figure&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem_has_multiple_figures</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;subfigures&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Math</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;DisplayMath&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;displaymath&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Div</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">k</span> <span class="ow">in</span> <span class="n">SUPPORTED_AMSTHM_BLOCKS</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="s2">&quot;amsthm&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Header</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;header&quot;</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="is_isolated_label"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.is_isolated_label">[docs]</a><span class="k">def</span> <span class="nf">is_isolated_label</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;check if element is isolated label&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">label</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="action"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.action">[docs]</a><span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_isolated_label</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Str</span><span class="p">):</span>
+        <span class="c1"># remove section and figure before references.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">next</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Link</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Link</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;section&quot;</span><span class="p">,</span> <span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="s2">&quot;fig&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Header</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_isolated_label</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">next</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Header is followed by isolated header on next line.&quot;</span><span class="p">)</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">is_isolated_label</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">identifier</span>
+        <span class="n">section_labels_to_insert</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem_has_multiple_figures</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Para element is actually subfigure.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">create_subplots</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Table</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem_has_multiple_figures</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Table element is actually subfigure.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">create_subplots</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">image_in_subplot</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">elem</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating Figure.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">create_image</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Link</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;http&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+                <span class="n">elem</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">elem</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;reference&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+            <span class="n">reftype</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;reference-type&quot;</span><span class="p">]</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">elem</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">target</span>
+
+            <span class="k">if</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">element_labels</span><span class="p">:</span>
+                <span class="n">target_elem</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">element_labels</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+                <span class="n">target_type</span> <span class="o">=</span> <span class="n">get_element_type</span><span class="p">(</span><span class="n">target_elem</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">target_type</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">elem</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{numref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;subfigures&quot;</span><span class="p">,</span> <span class="s2">&quot;dislaymath&quot;</span><span class="p">,</span> <span class="s2">&quot;header&quot;</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{ref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;amsthm&quot;</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;{prf:ref}`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;displaymath&quot;</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{eq}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Link to target type </span><span class="si">{</span><span class="n">target_type</span><span class="si">}</span><span class="s2"> not understood.&quot;</span>
+                        <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Link to target </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">CodeBlock</span><span class="p">):</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Div</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">create_amsthm_blocks</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Math</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;DisplayMath&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">create_displaymath</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="k">return</span> <span class="n">elem</span></div>
+
+
+<div class="viewcode-block" id="finalize"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.finalize">[docs]</a><span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+    <span class="c1"># add in title labels</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">section_labels_to_insert</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">label</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">)=&quot;</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="prepare"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.prepare">[docs]</a><span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+    <span class="c1"># determine level of blocks</span>
+    <span class="n">block_levels</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">get_level</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_directive_block</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">directive_level</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+            <span class="n">block_levels</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">level</span>
+
+    <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">get_level</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">element_levels</span> <span class="o">=</span> <span class="n">block_levels</span>
+
+    <span class="c1"># determine labels of blocks for hyperlinks</span>
+    <span class="n">block_labels</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">gather_labels</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;identifier&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
+                <span class="n">block_labels</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="k">elif</span> <span class="n">get_element_type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;displaymath&quot;</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;eqn&quot;</span>
+            <span class="k">if</span> <span class="s2">&quot;\label&quot;</span> <span class="ow">in</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">label\{([^\}]+)\}&quot;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">block_labels</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+
+    <span class="n">doc</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">gather_labels</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">element_labels</span> <span class="o">=</span> <span class="n">block_labels</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">run_filter</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">finalize</span><span class="o">=</span><span class="n">finalize</span><span class="p">,</span> <span class="n">prepare</span><span class="o">=</span><span class="n">prepare</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Tingkai Liu<br/>
+        
+            &copy; Copyright 2021, Tingkai Liu.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

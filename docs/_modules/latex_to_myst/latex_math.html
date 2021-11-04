@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latex_to_myst.latex_math &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../readme.html">
+   LaTeX to MyST Pandoc Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../installation.html">
+   Installation
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../modules.html">
+   latex_to_myst
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../latex_to_myst.html">
+     latex_to_myst package
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../authors.html">
+   Credits
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../history.html">
+   History
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for latex_to_myst.latex_math</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Handle LaTeX math blocks</span>
+
+<span class="sd">Deals with amsthm blocks and also DisplayMath blocks and render them in formats</span>
+<span class="sd">that are compatible with MyST syntax.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">panflute</span>
+<span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
+<span class="kn">from</span> <span class="nn">panflute.elements</span> <span class="kn">import</span> <span class="n">Subscript</span>
+<span class="kn">from</span> <span class="nn">.directive</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_amsthm_blocks&quot;</span><span class="p">,</span> <span class="s2">&quot;create_displaymath&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">remove_emph</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert all Emph to Span</span>
+
+<span class="sd">    By default all amsthm blocks are shown in italics in LaTeX.</span>
+<span class="sd">    This will convert all of them into :py:func:`Span` components.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Emph</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+
+<span class="c1"># panflute elements that render to horizontal spaces</span>
+<span class="n">HorizontalSpaces</span> <span class="o">=</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">Space</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">LineBreak</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">SoftBreak</span><span class="p">)</span>
+<span class="c1"># panflute elements that render to vertical spaces</span>
+<span class="n">VerticalSpaces</span> <span class="o">=</span> <span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">,)</span>
+
+
+<span class="k">def</span> <span class="nf">stringify_until_match</span><span class="p">(</span>
+    <span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span>
+    <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span><span class="p">,</span>
+    <span class="n">current_substring</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">node_list</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span>
+    <span class="n">match_substring</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Stringify element until the desired substring is matched</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        elem: panflute element that is being walked right now</span>
+<span class="sd">        doc: document (not used, added for call signature of</span>
+<span class="sd">          :py:func:`panflute.Element.walk`)</span>
+<span class="sd">        current_substring: a list of current substrings corresponding to all</span>
+<span class="sd">          previously walked nodes</span>
+<span class="sd">        node_list: a list of nodes that have been walked</span>
+<span class="sd">        match_substring: the desired substring to match</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        StopIteration: raised when the desired substring is matched</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; current_substring = []</span>
+<span class="sd">        &gt;&gt;&gt; node_list = []</span>
+<span class="sd">        &gt;&gt;&gt; desired_substring = &quot;I want this string&quot;</span>
+<span class="sd">        &gt;&gt;&gt; get_substring = partial(</span>
+<span class="sd">                stringify_until_match,</span>
+<span class="sd">                current_substring=current_substring,</span>
+<span class="sd">                node_list=node_list,</span>
+<span class="sd">                match_substring = match_substring</span>
+<span class="sd">            )</span>
+<span class="sd">        &gt;&gt;&gt; try:</span>
+<span class="sd">                starting_element.walk(get_substring)</span>
+<span class="sd">            except (StopIteration, RuntimeError):</span>
+<span class="sd">                def remove_node(e, doc):</span>
+<span class="sd">                    if e in node_list:</span>
+<span class="sd">                        return []</span>
+<span class="sd">                elem.walk(remove_node)</span>
+<span class="sd">            except Exception as e:</span>
+<span class="sd">                raise RuntimeError(&quot;Unknown Error in finding substring&quot;) from e</span>
+<span class="sd">            else:</span>
+<span class="sd">                logger.error(f&quot;{desired_substring} not found.&quot;)</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This function is adapted from `panflute.stringify`_.</span>
+
+<span class="sd">    .. `panflute.stringify`: https://github.com/sergiocorreia/panflute/blob/281ddeaebd2c2c94f457f3da785037cadf69389e/panflute/tools.py#L215</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">):</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">HorizontalSpaces</span><span class="p">):</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">VerticalSpaces</span><span class="p">):</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">Citation</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># Add quotes around the contents of Quoted()</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">Quoted</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">ans</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">container</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ans</span> <span class="o">+=</span> <span class="s1">&#39;&quot;&#39;</span>
+
+    <span class="n">current_substring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+    <span class="n">node_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_substring</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">match_substring</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+
+<div class="viewcode-block" id="create_amsthm_blocks"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.latex_math.create_amsthm_blocks">[docs]</a><span class="k">def</span> <span class="nf">create_amsthm_blocks</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Div</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">Para</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create directive blocks that render AMSTHM</span>
+
+<span class="sd">    Takes advantage of `sphinx-proof`_ sphinx extension to render</span>
+<span class="sd">    amsthm blocks. It does the following:</span>
+
+<span class="sd">    1. Walk the element to see if a `\label{}` node is found and save that</span>
+<span class="sd">       label. Remove that label element if found.</span>
+<span class="sd">    2. Parses the :py:func`panflute.Div`&#39;s stringified representation to</span>
+<span class="sd">       see if pattern like `Theorem 1.1 (Theorem Name)` or `Example 1.1` is</span>
+<span class="sd">       encountered. Save the theorem name `Theorem Name` if found.</span>
+<span class="sd">    3. Render output as a :py:func:`panflute.Div` element with the</span>
+<span class="sd">       `sphinx-proof`_ syntax.</span>
+
+
+<span class="sd">    The output looks something like::</span>
+
+<span class="sd">        ```{prf:remark} My Remark</span>
+<span class="sd">        :label: remark-1</span>
+
+<span class="sd">        This is my remark.</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    .. _`sphinx-proof`: https://github.com/executablebooks/sphinx-proof</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">k</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">SUPPORTED_AMSTHM_BLOCKS</span><span class="p">]):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Div with class </span><span class="si">{</span><span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="si">}</span><span class="s2"> not supported. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Use one of </span><span class="si">{</span><span class="n">SUPPORTED_AMSTHM_BLOCKS</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="n">identifier</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">identifier</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">identifier</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">get_identifier</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">identifier</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+                        <span class="n">identifier</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+                        <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">get_identifier</span><span class="p">)</span>
+
+    <span class="c1"># DEBUG: always use the first one, this could be wrong or use one</span>
+    <span class="c1"># that&#39;s not supported</span>
+    <span class="n">block_type</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nonumber</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span><span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;nonumber&quot;</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">classes</span><span class="p">])</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">remove_emph</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">block_type</span> <span class="o">==</span> <span class="s2">&quot;proof&quot;</span><span class="p">:</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">replace_keyword</span><span class="p">(</span><span class="s2">&quot;Proof.&quot;</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">block_type</span> <span class="o">==</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>  <span class="c1"># do nothing for center</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">block_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">\ [0-9|\.\ ]*)&quot;</span>
+        <span class="n">pattern_with_title</span> <span class="o">=</span> <span class="n">pattern</span> <span class="o">+</span> <span class="sa">fr</span><span class="s2">&quot;\(([^\)]*)\)\.?&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No Pattern found in AMSTHM Block </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">elem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern_with_title</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">pat_to_remove</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">pat</span><span class="p">:</span>
+            <span class="n">pat_to_remove</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">pattern_with_title</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">pat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pat_to_remove</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># remove the label from the content of the block</span>
+        <span class="k">if</span> <span class="n">pat_to_remove</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">current_substring</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">node_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">get_substring</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">stringify_until_match</span><span class="p">,</span>
+                <span class="n">current_substring</span><span class="o">=</span><span class="n">current_substring</span><span class="p">,</span>
+                <span class="n">node_list</span><span class="o">=</span><span class="n">node_list</span><span class="p">,</span>
+                <span class="n">match_substring</span><span class="o">=</span><span class="n">pat_to_remove</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">get_substring</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">StopIteration</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
+
+                <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">[]</span>
+
+                <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">remove_node</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unknown Error in finding substring&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pat_to_remove</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">identifier</span><span class="p">:</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">RawBlock</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:label: </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">nonumber</span><span class="p">:</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">pf</span><span class="o">.</span><span class="n">RawBlock</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:nonumber:&quot;</span> <span class="k">if</span> <span class="n">nonumber</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">content</span> <span class="o">+=</span> <span class="n">elem</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">create_directive_block</span><span class="p">(</span>
+            <span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="s2">&quot;prf:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">block_type</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Div</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span> <span class="kn">from</span> <span class="nn">e</span></div>
+
+
+<div class="viewcode-block" id="create_displaymath"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.latex_math.create_displaymath">[docs]</a><span class="k">def</span> <span class="nf">create_displaymath</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Math</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Doc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create DisplayMath block</span>
+
+<span class="sd">    Create a :py:func:`panflute.Span` block that contains the display</span>
+<span class="sd">    math using MyST syntax that looks like::</span>
+
+<span class="sd">        ```{math}</span>
+<span class="sd">        :label: my-equation</span>
+
+<span class="sd">        a = \int_1^2 u(t) dt</span>
+<span class="sd">        ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Math</span><span class="p">)</span> <span class="ow">and</span> <span class="n">elem</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;DisplayMath&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">elem</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;\label&quot;</span> <span class="ow">in</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+        <span class="n">identifier</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">label\{([^\}]+)\}&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;\label{</span><span class="si">%s</span><span class="s2">}&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">SoftBreak</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;:label: </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">identifier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">SoftBreak</span><span class="p">,</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">create_directive_block</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="s2">&quot;math&quot;</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="o">*</span><span class="n">block</span><span class="o">.</span><span class="n">content</span><span class="p">)</span></div>
+</pre></div>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Tingkai Liu<br/>
+        
+            &copy; Copyright 2021, Tingkai Liu.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
