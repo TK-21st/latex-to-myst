@@ -7,10 +7,11 @@ import re
 import typing as tp
 import logging
 from functools import partial
-import panflute
 import panflute as pf
-from panflute.elements import Subscript
-from .directive import *
+from .directive import (
+    create_directive_block,
+    SUPPORTED_AMSTHM_BLOCKS,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ def remove_emph(e: pf.Element, doc: pf.Doc):
     """
     if isinstance(e, pf.Emph):
         return pf.Span(*e.content)
+    return e
 
 
 # panflute elements that render to horizontal spaces
@@ -89,13 +91,13 @@ def stringify_until_match(
         ans = " "
     elif isinstance(elem, VerticalSpaces):
         ans = "\n\n"
-    elif type(elem) == pf.Citation:
+    elif isinstance(elem, pf.Citation):
         ans = ""
     else:
         ans = ""
 
     # Add quotes around the contents of Quoted()
-    if type(elem.parent) == pf.Quoted:
+    if isinstance(elem.parent, pf.Quoted):
         if elem.index == 0:
             ans = '"' + ans
         if elem.index == len(elem.container) - 1:
@@ -113,7 +115,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     Takes advantage of `sphinx-proof`_ sphinx extension to render
     amsthm blocks. It does the following:
 
-    1. Walk the element to see if a `\label{}` node is found and save that
+    1. Walk the element to see if a `\\label{}` node is found and save that
        label. Remove that label element if found.
     2. Parses the :py:func`panflute.Div`'s stringified representation to
        see if pattern like `Theorem 1.1 (Theorem Name)` or `Example 1.1` is
@@ -151,6 +153,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
                     if "label" in e.attributes:
                         identifier = e.attributes["label"]
                         return []
+            return e
 
         elem.walk(get_identifier)
 
@@ -166,7 +169,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
         pass  # do nothing for center
     else:
         pattern = fr"({block_type.capitalize()}\ [0-9|\.\ ]*)"
-        pattern_with_title = pattern + fr"\(([^\)]*)\)\.?"
+        pattern_with_title = pattern + r"\(([^\)]*)\)\.?"
 
         if not re.findall(pattern, pf.stringify(elem.content[0])):
             raise RuntimeError(f"No Pattern found in AMSTHM Block \n {elem}")
@@ -200,6 +203,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
                 def remove_node(e, doc):
                     if e in node_list:
                         return []
+                    return e
 
                 elem.walk(remove_node)
             except Exception as e:
@@ -212,9 +216,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     if identifier:
         content.append(pf.RawBlock(f":label: {identifier}", format="markdown"))
     if nonumber:
-        content.append(
-            pf.RawBlock(f":nonumber:" if nonumber else "", format="markdown")
-        )
+        content.append(pf.RawBlock(":nonumber:" if nonumber else "", format="markdown"))
 
     content += elem.content
     try:
