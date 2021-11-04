@@ -37,7 +37,7 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Directive Block"""
     if not isinstance(elem, pf.Image):
         return
-    url = f"../{elem.url}"
+    url = elem.url # f"../{elem.url}"
     label = elem.identifier
     attr = elem.attributes
     attr_str = ""

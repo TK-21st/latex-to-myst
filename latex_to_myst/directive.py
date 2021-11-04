@@ -103,12 +103,13 @@ def create_directive_block(
         ]
     else:
         block_content = [
+            pf.SoftBreak,
             pf.RawInline(
-                "\n" + "`" * (level + 2) + "{%s} %s\n" % (block_type, label),
+                "`" * (level + 2) + "{%s} %s\n" % (block_type, label),
                 format="markdown",
             ),
             *content,
-            pf.RawInline("\n" + "`" * (level + 2) + "\n", format="markdown"),
+            pf.RawInline(f"\n{'`'* (level + 2)}\n", format="markdown"),
         ]
     return create_using(*block_content)
 
