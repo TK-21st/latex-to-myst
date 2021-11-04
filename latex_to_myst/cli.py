@@ -1,10 +1,8 @@
-import sys
+import shutil
 import argparse
 import subprocess
 from pathlib import Path
 from latex_to_myst.main import main
-import logging
-import shutil
 
 
 def main():

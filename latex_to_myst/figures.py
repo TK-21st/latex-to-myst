@@ -2,12 +2,11 @@
 
 """
 import re
-import numpy as np
-import typing as tp
-import panflute as pf
-from pathlib import Path
 import logging
-from .directive import *
+import typing as tp
+import numpy as np
+import panflute as pf
+from .directive import create_directive_block
 
 logger = logging.getLogger(__name__)
 __all__ = ["break_long_string", "create_image", "create_subplots"]
@@ -37,7 +36,7 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Directive Block"""
     if not isinstance(elem, pf.Image):
         return
-    url = elem.url # f"../{elem.url}"
+    url = elem.url  # f"../{elem.url}"
     label = elem.identifier
     attr = elem.attributes
     attr_str = ""

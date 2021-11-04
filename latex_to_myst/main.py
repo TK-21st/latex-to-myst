@@ -4,17 +4,22 @@ import logging
 import sys
 import panflute as pf
 from panflute.elements import Doc
-from latex_to_myst.latex_math import *
-from latex_to_myst.figures import *
-from latex_to_myst.directive import *
+from latex_to_myst.latex_math import create_amsthm_blocks, create_displaymath
+from latex_to_myst.figures import create_image, create_subplots
+from latex_to_myst.directive import (
+    elem_has_multiple_figures,
+    image_in_subplot,
+    is_directive_block,
+    directive_level,
+    SUPPORTED_AMSTHM_BLOCKS,
+)
 
 section_labels_to_insert = {}
 logging.basicConfig(
-    format="[%(levelname)8s] %(message)s",
-    stream=sys.stderr,
-    level=logging.ERROR
+    format="[%(levelname)8s] %(message)s", stream=sys.stderr, level=logging.ERROR
 )
 logger = logging.getLogger(__name__)
+
 
 def get_element_type(elem: pf.Element):
     if isinstance(elem, pf.Image):
@@ -100,7 +105,6 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
 
         if hasattr(elem, "attributes") and "reference" in elem.attributes:
             target = str(elem.attributes["reference"])
-            reftype = elem.attributes["reference-type"]
             elem.attributes = {}
             elem.url = target
 
@@ -109,19 +113,15 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
                 target_type = get_element_type(target_elem)
                 if not target_type:
                     return elem
-                else:
-                    if target_type in ["figure"]:
-                        return pf.RawInline("{numref}`%s`" % target, format="markdown")
-                    elif target_type in ["subfigures", "dislaymath", "header"]:
-                        return pf.RawInline("{ref}`%s`" % target, format="markdown")
-                    elif target_type in ["amsthm"]:
-                        return pf.RawInline("{prf:ref}`%s`" % target, format="markdown")
-                    elif target_type in ["displaymath"]:
-                        return pf.RawInline("{eq}`%s`" % target, format="markdown")
-                    else:
-                        logger.error(
-                            f"Link to target type {target_type} not understood."
-                        )
+                if target_type in ["figure"]:
+                    return pf.RawInline("{numref}`%s`" % target, format="markdown")
+                if target_type in ["subfigures", "dislaymath", "header"]:
+                    return pf.RawInline("{ref}`%s`" % target, format="markdown")
+                if target_type in ["amsthm"]:
+                    return pf.RawInline("{prf:ref}`%s`" % target, format="markdown")
+                if target_type in ["displaymath"]:
+                    return pf.RawInline("{eq}`%s`" % target, format="markdown")
+                logger.error(f"Link to target type {target_type} not understood.")
             else:
                 logger.error(f"Link to target {target} not found.")
         return elem

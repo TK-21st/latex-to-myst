@@ -23,6 +23,7 @@ __all__ = [
     "directive_level",
     "SUPPORTED_AMSTHM_BLOCKS",
 ]
+logger = logging.getLogger(__name__)
 
 SUPPORTED_AMSTHM_BLOCKS = [
     "remark",
