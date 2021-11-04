@@ -12,6 +12,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "panflute>=2.1",
+    "numpy>=1.20"
 ]
 test_requirements = ["pytest>=6.2"]
 
