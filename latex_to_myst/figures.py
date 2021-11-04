@@ -55,13 +55,13 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     else:
         caption = elem.content
 
-    content = [
-        pf.Str(f"{url}\n"),
-        pf.Str(f":name: {label}\n") if label else pf.Str(""),
-        pf.Str(f"{attr_str}") if attr_str else pf.Str(""),
-        *caption
-    ]
-    return create_declarative_block(elem, doc, content, 'figure', pf.Span)
+    content = []
+    if label:
+        content.append(pf.RawInline(f":name: {label}\n", format="markdown"))
+    if attr_str:
+        content.append(pf.RawInline(f"{attr_str}", format="markdown"))
+    content += caption
+    return create_declarative_block(elem, doc, content, 'figure', pf.Span, label=url)
 
 def _create_subplots_from_para(elem: pf.Para, doc):
     """Create Subplot using list-table and return table and substitutions to put in header"""
@@ -144,11 +144,10 @@ def create_subplots(
         caption = elem.title
 
     content = [
-        pf.RawInline(" " + caption, format="markdown"),
         pf.RawInline(
             f'\n:label: {label}' if label else '\n',
             format='markdown'
         ),
         *image_content
     ]
-    return create_declarative_block(elem, doc, content, 'list-table', pf.Para)
+    return create_declarative_block(elem, doc, content, 'list-table', pf.Para, label=caption)

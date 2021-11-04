@@ -49,10 +49,13 @@ def create_declarative_block(
     content: tp.Iterable[pf.Element],
     block_type: str,
     create_using: tp.Union[pf.Para, pf.Span] = pf.Span,
+    label: str = ""
 ) -> tp.Union[pf.Para, pf.Span]:
     """Create a declarative block as literal"""
     if not is_declarative_block(elem):
         return elem
+
+    # get level of block
     try:
         all_levels = doc.element_levels
         level = all_levels[elem]
@@ -62,9 +65,10 @@ def create_declarative_block(
     except Exception as e:
         raise RuntimeError("Unkown error when creating declarative block") from e
 
+    # create block
     if create_using == pf.Div:
         block_content = [
-            pf.RawBlock('`'*(level+2) + '{%s} ' % block_type, format='markdown'),
+            pf.RawBlock('`'*(level+2) + '{%s} %s' % (block_type, label), format='markdown'),
             *content,
             pf.RawBlock('`'*(level+2), format='markdown')
         ]
