@@ -37,11 +37,7 @@ setup(
     keywords="latex_to_myst",
     name="latex_to_myst",
     packages=find_packages(include=["latex_to_myst", "latex_to_myst"]),
-    entry_points ={
-        'console_scripts': [
-            'latex2myst = latex_to_myst:main'
-        ]
-    },
+    entry_points={"console_scripts": ["latex2myst = latex_to_myst:main"]},
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/TK-21st/latex-to-myst",

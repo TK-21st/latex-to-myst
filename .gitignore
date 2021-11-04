@@ -699,3 +699,7 @@ TSWLatexianTemp*
 Parsed_TeX
 TeX
 chap*.md
+docs/latex_to_myst.rst
+docs/latex_to_myst.**.rst
+tests/test.md
+test.md

@@ -1,4 +1,5 @@
-"""Pandoc filter for converting LaTeX to MyST"""
+"""Pandoc filter for converting LaTeX to MyST
+"""
 
 __author__ = """Tingkai Liu"""
 __email__ = "tingkai.liu.21st@gmail.com"
