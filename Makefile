@@ -59,7 +59,10 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	sphinx-apidoc -o docs/ latex_to_myst
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+
+github:
+	@make docs
+	@cp -a docs/_build/html/. docs
 
 servedocs: docs ## compile the docs watching for changes
 	sphinx-autobuild docs docs/_build/html
