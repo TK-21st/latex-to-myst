@@ -74,7 +74,7 @@ def create_declarative_block(
         ]
     else:
         block_content = [
-            pf.RawInline('\n' + '`'*(level+2) + '{%s} ' % block_type, format='markdown'),
+            pf.RawInline('\n' + '`'*(level+2) + '{%s} %s\n' % (block_type, label), format='markdown'),
             *content,
             pf.RawInline('\n' + '`'*(level+2) + '\n', format='markdown')
         ]
