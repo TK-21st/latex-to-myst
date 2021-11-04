@@ -11,7 +11,7 @@ CURR_DIR = Path(__file__).parent
 
 @pytest.mark.parametrize("block_type", ["figure", "math", "amsthm"])
 def test_basics(block_type):
-    out = tempfile.NamedTemporaryFile("w+")
+    out = tempfile.NamedTemporaryFile("w+", dir=str(CURR_DIR))
     subprocess.run(
         ["latex2myst", str(CURR_DIR / "sample_files" / f"{block_type}.tex"), out.name],
         check=True,
