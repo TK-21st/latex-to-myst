@@ -79,7 +79,8 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
         return create_image(elem, doc)
 
     if isinstance(elem, pf.Link):
-        if not hasattr(elem, 'attributes'):
+
+        if not elem.attributes:
             if 'http' in elem.url:
                 elem.url = ''.join(elem.url.split(' '))
             return elem
@@ -128,8 +129,8 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
 def finalize(doc: pf.Doc):
     # add in title labels
     for n, (elem, label) in enumerate(section_labels_to_insert.items()):
-        idx =doc.content.index(elem)
-        doc.content.insert(idx, pf.Para(pf.Str(f"({label})=")))
+        idx = doc.content.index(elem)
+        doc.content.insert(idx, pf.Para(pf.Str(f"({label.strip()})=")))
 
 def prepare(doc: pf.Doc):
     # determine level of blocks
