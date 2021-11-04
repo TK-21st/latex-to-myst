@@ -36,6 +36,8 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     attr = elem.attributes
     attr_str = ""
     for name, val in attr.items():
+        if name == 'height':
+            continue
         _match = re.findall(r"([0-9|.]*)(\\textwidth)", val)
         if _match:
             if _match[0][0]:
