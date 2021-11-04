@@ -47,7 +47,7 @@ def create_amsmath_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
         pass # do nothing for center
     else:
         pattern = fr"({block_type.capitalize()}\ [0-9|\.\ ]*)"
-        pattern_with_title = pattern + fr"\(([^\)]*)\)"
+        pattern_with_title = pattern + fr"\(([^\)]*)\)\.?"
 
         if not re.findall(pattern, pf.stringify(elem.content[0])):
             raise RuntimeError(f"No Pattern found in AMSTHM Block \n {elem}")
@@ -71,7 +71,7 @@ def create_amsmath_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
             label = ""
 
 
-        # TODO: remove the label from the content of the block
+        # remove the label from the content of the block
         if pat_to_remove is not None:
             def attach_str(e, doc, answer, node_list):
                 if hasattr(e, 'text'):
@@ -94,7 +94,7 @@ def create_amsmath_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
 
                 answer.append(ans)
                 node_list.append(e)
-                if ''.join(answer).strip(' .') == pat_to_remove.strip(' .'):
+                if ''.join(answer).strip() == pat_to_remove.strip():
                     raise StopIteration
 
             answer = []
@@ -134,8 +134,9 @@ def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
         identifier = re.findall(r"\\label\{([^\}]+)\}", elem.text)[0]
         content = content.replace("\label{%s}" % identifier, "")
     content = [
-        pf.Str('\n'),
-        pf.RawInline(f":label: {identifier}\n\n" if identifier is not None else "", format='markdown'),
+        pf.SoftBreak,
+        pf.RawInline(f":label: {identifier}\n" if identifier is not None else "", format='markdown'),
+        pf.SoftBreak,
         pf.RawInline(content, format='markdown')
     ]
     block = create_declarative_block(elem, doc, content, 'math', pf.Span)
