@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>latex_to_myst.figures &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    <title>latex_to_myst.figures &#8212; Latex-to-Myst 0.0.1 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -53,7 +53,7 @@
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
-      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.0.1 documentation</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -166,12 +166,11 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
-<span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">.directive</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
+<span class="kn">from</span> <span class="nn">.directive</span> <span class="kn">import</span> <span class="n">create_directive_block</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;break_long_string&quot;</span><span class="p">,</span> <span class="s2">&quot;create_image&quot;</span><span class="p">,</span> <span class="s2">&quot;create_subplots&quot;</span><span class="p">]</span>
@@ -201,7 +200,7 @@
     <span class="sd">&quot;&quot;&quot;Create Image Directive Block&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
         <span class="k">return</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">url</span> <span class="c1"># f&quot;../{elem.url}&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">url</span>  <span class="c1"># f&quot;../{elem.url}&quot;</span>
     <span class="n">label</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">identifier</span>
     <span class="n">attr</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span>
     <span class="n">attr_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>

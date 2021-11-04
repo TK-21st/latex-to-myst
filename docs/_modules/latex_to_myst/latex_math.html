@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>latex_to_myst.latex_math &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    <title>latex_to_myst.latex_math &#8212; Latex-to-Myst 0.0.1 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -53,7 +53,7 @@
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
-      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.0.1 documentation</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -171,10 +171,11 @@
 <span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">import</span> <span class="nn">panflute</span>
 <span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
-<span class="kn">from</span> <span class="nn">panflute.elements</span> <span class="kn">import</span> <span class="n">Subscript</span>
-<span class="kn">from</span> <span class="nn">.directive</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.directive</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_directive_block</span><span class="p">,</span>
+    <span class="n">SUPPORTED_AMSTHM_BLOCKS</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -189,6 +190,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Emph</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">Span</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">e</span>
 
 
 <span class="c1"># panflute elements that render to horizontal spaces</span>
@@ -253,13 +255,13 @@
         <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">VerticalSpaces</span><span class="p">):</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
-    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">Citation</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Citation</span><span class="p">):</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ans</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="c1"># Add quotes around the contents of Quoted()</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span> <span class="o">==</span> <span class="n">pf</span><span class="o">.</span><span class="n">Quoted</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Quoted</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">ans</span> <span class="o">=</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">ans</span>
         <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">container</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -277,7 +279,7 @@
 <span class="sd">    Takes advantage of `sphinx-proof`_ sphinx extension to render</span>
 <span class="sd">    amsthm blocks. It does the following:</span>
 
-<span class="sd">    1. Walk the element to see if a `\label{}` node is found and save that</span>
+<span class="sd">    1. Walk the element to see if a `\\label{}` node is found and save that</span>
 <span class="sd">       label. Remove that label element if found.</span>
 <span class="sd">    2. Parses the :py:func`panflute.Div`&#39;s stringified representation to</span>
 <span class="sd">       see if pattern like `Theorem 1.1 (Theorem Name)` or `Example 1.1` is</span>
@@ -315,6 +317,7 @@
                     <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
                         <span class="n">identifier</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
                         <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="n">e</span>
 
         <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">get_identifier</span><span class="p">)</span>
 
@@ -330,7 +333,7 @@
         <span class="k">pass</span>  <span class="c1"># do nothing for center</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">block_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">\ [0-9|\.\ ]*)&quot;</span>
-        <span class="n">pattern_with_title</span> <span class="o">=</span> <span class="n">pattern</span> <span class="o">+</span> <span class="sa">fr</span><span class="s2">&quot;\(([^\)]*)\)\.?&quot;</span>
+        <span class="n">pattern_with_title</span> <span class="o">=</span> <span class="n">pattern</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;\(([^\)]*)\)\.?&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">stringify</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No Pattern found in AMSTHM Block </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">elem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -364,6 +367,7 @@
                 <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
                         <span class="k">return</span> <span class="p">[]</span>
+                    <span class="k">return</span> <span class="n">e</span>
 
                 <span class="n">elem</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">remove_node</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -376,9 +380,7 @@
     <span class="k">if</span> <span class="n">identifier</span><span class="p">:</span>
         <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">RawBlock</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:label: </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">nonumber</span><span class="p">:</span>
-        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">pf</span><span class="o">.</span><span class="n">RawBlock</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;:nonumber:&quot;</span> <span class="k">if</span> <span class="n">nonumber</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">RawBlock</span><span class="p">(</span><span class="s2">&quot;:nonumber:&quot;</span> <span class="k">if</span> <span class="n">nonumber</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">))</span>
 
     <span class="n">content</span> <span class="o">+=</span> <span class="n">elem</span><span class="o">.</span><span class="n">content</span>
     <span class="k">try</span><span class="p">:</span>

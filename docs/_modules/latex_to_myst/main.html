@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>latex_to_myst.main &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    <title>latex_to_myst.main &#8212; Latex-to-Myst 0.0.1 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -53,7 +53,7 @@
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
-      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.0.1 documentation</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -168,17 +168,22 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">panflute</span> <span class="k">as</span> <span class="nn">pf</span>
 <span class="kn">from</span> <span class="nn">panflute.elements</span> <span class="kn">import</span> <span class="n">Doc</span>
-<span class="kn">from</span> <span class="nn">latex_to_myst.latex_math</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">latex_to_myst.figures</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">latex_to_myst.directive</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.latex_math</span> <span class="kn">import</span> <span class="n">create_amsthm_blocks</span><span class="p">,</span> <span class="n">create_displaymath</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.figures</span> <span class="kn">import</span> <span class="n">create_image</span><span class="p">,</span> <span class="n">create_subplots</span>
+<span class="kn">from</span> <span class="nn">latex_to_myst.directive</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">elem_has_multiple_figures</span><span class="p">,</span>
+    <span class="n">image_in_subplot</span><span class="p">,</span>
+    <span class="n">is_directive_block</span><span class="p">,</span>
+    <span class="n">directive_level</span><span class="p">,</span>
+    <span class="n">SUPPORTED_AMSTHM_BLOCKS</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">section_labels_to_insert</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%(levelname)8s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
-    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%(levelname)8s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
 <span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="get_element_type"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.main.get_element_type">[docs]</a><span class="k">def</span> <span class="nf">get_element_type</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="n">pf</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
@@ -264,7 +269,6 @@
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;reference&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
             <span class="n">target</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
-            <span class="n">reftype</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;reference-type&quot;</span><span class="p">]</span>
             <span class="n">elem</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">elem</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">target</span>
 
@@ -273,19 +277,15 @@
                 <span class="n">target_type</span> <span class="o">=</span> <span class="n">get_element_type</span><span class="p">(</span><span class="n">target_elem</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">target_type</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">elem</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">]:</span>
-                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{numref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;subfigures&quot;</span><span class="p">,</span> <span class="s2">&quot;dislaymath&quot;</span><span class="p">,</span> <span class="s2">&quot;header&quot;</span><span class="p">]:</span>
-                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{ref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;amsthm&quot;</span><span class="p">]:</span>
-                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;{prf:ref}`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;displaymath&quot;</span><span class="p">]:</span>
-                        <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{eq}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Link to target type </span><span class="si">{</span><span class="n">target_type</span><span class="si">}</span><span class="s2"> not understood.&quot;</span>
-                        <span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{numref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;subfigures&quot;</span><span class="p">,</span> <span class="s2">&quot;dislaymath&quot;</span><span class="p">,</span> <span class="s2">&quot;header&quot;</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{ref}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;amsthm&quot;</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;{prf:ref}`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;displaymath&quot;</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">pf</span><span class="o">.</span><span class="n">RawInline</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{eq}</span><span class="s2">`</span><span class="si">%s</span><span class="s2">`&quot;</span> <span class="o">%</span> <span class="n">target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Link to target type </span><span class="si">{</span><span class="n">target_type</span><span class="si">}</span><span class="s2"> not understood.&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Link to target </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">elem</span>

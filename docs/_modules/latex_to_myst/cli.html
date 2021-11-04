@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>latex_to_myst.cli &#8212; Latex-to-Myst 0.1.0 documentation</title>
+    <title>latex_to_myst.cli &#8212; Latex-to-Myst 0.0.1 documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -53,7 +53,7 @@
     <a class="navbar-brand text-wrap" href="../../index.html">
       
       
-      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.1.0 documentation</h1>
+      <h1 class="site-logo" id="site-title">Latex-to-Myst 0.0.1 documentation</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -162,13 +162,11 @@
               <div>
                 
   <h1>Source code for latex_to_myst.cli</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span></span><span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">latex_to_myst.main</span> <span class="kn">import</span> <span class="n">main</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../latex_to_myst.html#latex_to_myst.cli.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
