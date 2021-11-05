@@ -3,6 +3,6 @@
 
 __author__ = """Tingkai Liu"""
 __email__ = "tingkai.liu.21st@gmail.com"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 from latex_to_myst.cli import main
