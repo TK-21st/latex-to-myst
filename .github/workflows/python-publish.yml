@@ -9,13 +9,10 @@
 name: Upload Python Package
 
 on:
-  branches:
-    - 'main'
-
+  branches: [ main ]
   push:
     tags:
       - "v*.*.*"
-
   workflow_run:
     workflows: ["Test"]
     types:
