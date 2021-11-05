@@ -9,8 +9,8 @@
 name: Upload Python Package
 
 on:
-  branches: [ main ]
   push:
+    branches: [ main ]
     tags:
       - "v*.*.*"
   workflow_run:
