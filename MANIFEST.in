@@ -2,6 +2,8 @@ include AUTHORS.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include latex_to_myst/macros.tex
+include latex_to_myst/pygments.theme
 
 recursive-include tests *
 recursive-exclude * __pycache__
