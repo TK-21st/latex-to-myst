@@ -5,15 +5,19 @@ import glob
 from pathlib import Path
 from typing import Type
 
-def _validate_file(path: str, file_ext: str, check_exist: bool =True) -> str:
+
+def _validate_file(path: str, file_ext: str, check_exist: bool = True) -> str:
     """Validate file path according to file_ext"""
     if not Path(path).suffix:
         path += file_ext
     if check_exist and not Path(path).exists():
         raise RuntimeError(f"File '{path}' not found.")
     if Path(path).suffix != file_ext:
-        raise RuntimeError(f"File '{path}' extension does not match desired extension '{file_ext}'. ")
+        raise RuntimeError(
+            f"File '{path}' extension does not match desired extension '{file_ext}'. "
+        )
     return path
+
 
 def main():
     """Main CLI Entry Point to Latex-to-Myst
@@ -75,13 +79,13 @@ def main():
 
     macro_paths = []
     for fname in custom_macros:
-        fname = _validate_file(fname, '.tex')
+        fname = _validate_file(fname, ".tex")
         macro_paths.append(Path(fname))
 
     CURR_PATH = Path(__file__).parent.resolve()
 
-    fi = Path(_validate_file(args.file_in, '.tex'))
-    fo = Path(_validate_file(args.file_out, '.md', check_exist=False))
+    fi = Path(_validate_file(args.file_in, ".tex"))
+    fo = Path(_validate_file(args.file_out, ".md", check_exist=False))
 
     cmd = [
         "pandoc",
