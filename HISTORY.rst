@@ -21,3 +21,8 @@ History
 ------------------
 
 * Embarrassing Github Release Debugging Patch
+
+0.0.5 (2021-11-04)
+------------------
+
+* Embarrassing Github Release Debugging Patch
