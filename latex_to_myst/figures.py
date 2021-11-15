@@ -1,19 +1,31 @@
 """Figures directives
-
 """
 import re
 import logging
 import typing as tp
-import numpy as np
 import panflute as pf
-from .directive import create_directive_block
+from latex_to_myst.helpers import create_directive_block, elem_has_multiple_figures
 
 logger = logging.getLogger(__name__)
-__all__ = ["break_long_string", "create_image", "create_subplots"]
+
+
+def image_in_subplot(elem: pf.Image):
+    """Check if an image node is in subplot"""
+    if isinstance(elem.parent, pf.Para):
+        return elem_has_multiple_figures(elem.parent)
+    if isinstance(elem.ancestor(1), pf.TableCell):
+        table = elem.ancestor(4)
+        return elem_has_multiple_figures(table)
+    if isinstance(elem.ancestor(2), pf.TableCell):
+        table = elem.ancestor(5)
+        return elem_has_multiple_figures(table)
+    return False
 
 
 def break_long_string(string: str, max_len: int = 70, indent: int = 0) -> str:
     """Break long string into shorter strings of max_len (with indent added)"""
+    import numpy as np
+
     string = " ".join(
         string.split(" ")
     )  # convert multiple consecutive white spaces to single
@@ -84,7 +96,9 @@ def _create_subplots_from_para(elem: pf.Para, doc):
             if e.identifier:
                 image_id += f":{e.identifier}"
             image_ids.append(image_id)
-            assert image_id not in doc.metadata["substitutions"].content
+            if image_id in doc.metadata["substitutions"].content:
+                logger.error(f"Image ID {image_id} already exists, skipping.")
+                continue
             img = create_image(e, doc)
             doc.metadata["substitutions"].content[image_id] = pf.MetaInlines(img)
             if start_new_row:
@@ -163,3 +177,32 @@ def create_subplots(
     return create_directive_block(
         elem, doc, content, "list-table", pf.Para, label=caption
     )
+
+
+def action(elem: pf.Element, doc: pf.Doc = None):
+    """Figure Actions"""
+    if isinstance(elem, pf.Para):
+        if elem_has_multiple_figures(elem):
+            logger.debug("Creating subfigure from Para.")
+            return create_subplots(elem, doc)
+        return elem
+
+    if isinstance(elem, pf.Table):
+        if elem_has_multiple_figures(elem):
+            logger.debug("Creating subfigure from Table.")
+            return create_subplots(elem, doc)
+        return elem
+
+    if isinstance(elem, pf.Image):
+        if image_in_subplot(elem):
+            return elem
+        logger.debug(f"Creating Figure: {elem.url}")
+        return create_image(elem, doc)
+
+
+def main(doc: pf.Doc):
+    return pf.run_filter(action, doc=doc)
+
+
+if __name__ == "__main__":
+    main()

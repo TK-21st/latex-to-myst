@@ -1,9 +1,9 @@
-import shutil
+import io
 import argparse
-import subprocess
-import glob
+import logging
+import panflute as pf
 from pathlib import Path
-from typing import Type
+from .main import ACTIONS, prepare, finalize
 
 
 def _validate_file(path: str, file_ext: str, check_exist: bool = True) -> str:
@@ -44,13 +44,13 @@ def main():
     parser.add_argument(
         "file_out", metavar="output", type=str, help="Output Markdown file"
     )
-    # parser.add_argument(
-    #     "-l",
-    #     "--log",
-    #     default=None,
-    #     type=str,
-    #     help="Logging level, default to None which turns off logging.",
-    # )
+    parser.add_argument(
+        "-l",
+        "--log",
+        default="CRITICAL",
+        type=str,
+        help="Logging level, default to None which turns off logging.",
+    )
     parser.add_argument(
         "-dm",
         "--default_macros",
@@ -58,55 +58,60 @@ def main():
         default=True,
         help="Whether to use default macro.",
     )
-    parser.add_argument(
-        "-hl",
-        "--highlight",
-        action="store_true",
-        default=True,
-        help="Whether to enable syntax highlighting",
-    )
     args = parser.parse_args()
+    logging.basicConfig(
+        format="[%(levelname)s] %(message)s", level=getattr(logging, args.log.upper())
+    )
 
-    if not shutil.which("pandoc"):
+    if pf.tools.PandocVersion().version < (2, 11):
         raise ModuleNotFoundError("Pandoc >= 2.11 required.")
 
-    custom_macros = []
+    with open(Path(__file__).parent / "macros.tex", "r") as f:
+        default_macros = f.read()
+    macros = default_macros if args.default_macros else ""
     if args.macro_files is not None:
+        macro_paths = []
         if isinstance(args.macro_files, str):
-            custom_macros = [args.macro_files]
+            macro_paths = [args.macro_files]
         else:
-            custom_macros = args.macro_files
+            macro_paths = args.macro_files
 
-    macro_paths = []
-    for fname in custom_macros:
-        fname = _validate_file(fname, ".tex")
-        macro_paths.append(Path(fname))
-
-    CURR_PATH = Path(__file__).parent.resolve()
+        for fname in macro_paths:
+            fname = _validate_file(fname, ".tex")
+            with open(Path(fname), "r") as f:
+                macros += f.read()
 
     fi = Path(_validate_file(args.file_in, ".tex"))
     fo = Path(_validate_file(args.file_out, ".md", check_exist=False))
 
-    cmd = [
-        "pandoc",
-        str(CURR_PATH / "macros.tex") if args.default_macros else "",
-        *[str(p) for p in macro_paths],
-        str(fi),
-        "-o",
-        str(fo),
-        "--filter",
-        str(CURR_PATH / "main.py"),
-        "-t",
-        "markdown+latex_macros",
-        "--markdown-headings=atx",
-        "--highlight-style" if args.highlight else "",
-        str(CURR_PATH / "pygments.theme") if args.highlight else "",
-        "--standalone",
-    ]
-    subprocess.run(
-        cmd,
-        check=True,
-    )
+    logging.info(f"Parsing Input File {fi}")
+    logging.info(f"Additional Macros Provided: {macro_paths}")
+    logging.info(f"Using Default Macros: {args.default_macros}")
+    logging.debug(f"Macros Used\n{macros} \n")
+    with open(fi, "r") as input_stream, open(fo, "w") as output_stream:
+        doc = pf.convert_text(
+            macros + input_stream.read(),
+            input_format="latex",
+            output_format="panflute",
+            standalone=True,
+        )
+        for n, (_name, _action) in enumerate(ACTIONS):
+            logging.info(f"Running {n+1}/{len(ACTIONS)} Filter: {_name}")
+            try:
+                doc = pf.run_filter(
+                    _action,
+                    doc=doc,
+                    prepare=prepare if n == 0 else None,
+                    finalize=finalize if n == len(ACTIONS) - 1 else None,
+                )
+            except Exception as e:
+                logging.error("Parsing failed")
+
+        output_stream.write(
+            pf.convert_text(
+                doc, input_format="panflute", output_format="markdown", standalone=True
+            )
+        )
 
 
 if __name__ == "__main__":
