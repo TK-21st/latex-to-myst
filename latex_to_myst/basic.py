@@ -61,6 +61,7 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
     if isinstance(elem, pf.Div):
         return create_generic_div_block(elem, doc)
 
+
 def main(doc: pf.Doc):
     return pf.run_filter(action, doc=doc)
 

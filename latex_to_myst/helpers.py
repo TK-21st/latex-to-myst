@@ -157,6 +157,7 @@ def stringify_until_match(
     if "".join(current_substring).strip() == match_substring.strip():
         raise StopIteration
 
+
 def create_generic_div_block(elem: pf.Element, doc: pf.Doc):
     """Create a Generic Div that is not of a special type"""
     classes = elem.classes
@@ -180,6 +181,7 @@ def create_generic_div_block(elem: pf.Element, doc: pf.Doc):
         create_using=pf.Div,
         label=" ".join(classes),
     )
+
 
 def create_directive_block(
     elem: pf.Element,
