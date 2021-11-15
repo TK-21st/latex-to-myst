@@ -3,7 +3,7 @@
 import logging
 import panflute as pf
 
-from latex_to_myst.helpers import create_directive_block
+from latex_to_myst.helpers import create_directive_block, create_generic_div_block
 
 logger = logging.getLogger(__name__)
 
@@ -59,22 +59,7 @@ def action(elem: pf.Element, doc: pf.Doc = None) -> pf.Element:
         return elem
 
     if isinstance(elem, pf.Div):
-        classes = elem.classes
-
-        # do nothing if content is a special directive block
-        # DEBUG: Make this more robust
-        if isinstance(elem.content[0], pf.RawBlock):
-            return elem
-
-        return create_directive_block(
-            elem,
-            doc,
-            content=elem.content,
-            block_type="div",
-            create_using=pf.Div,
-            label=" ".join(classes),
-        )
-
+        return create_generic_div_block(elem, doc)
 
 def main(doc: pf.Doc):
     return pf.run_filter(action, doc=doc)
