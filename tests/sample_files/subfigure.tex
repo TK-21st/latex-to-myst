@@ -1,0 +1,62 @@
+\begin{figure}[ht]
+    \center
+    \includegraphics[]{path/to/figure/1.suffix}\\
+    \includegraphics[]{path/to/figure/2.suffix}
+    \caption{Overall Caption no subfloat.}
+\label{fig:no_subfloat}
+\end{figure}
+
+\begin{figure}[ht]
+    \center
+    \subfloat[]{\includegraphics[]{path/to/figure/1.suffix}}\\
+    \subfloat[]{\includegraphics[]{path/to/figure/2.suffix}}
+    \caption{Overall Caption subfloat.}
+\label{fig:subfloat}
+\end{figure}
+
+\begin{figure}[ht]
+    \center
+    \subfloat[][subcaption 1. \label{fig:sublabel1}]{\includegraphics[]{path/to/figure/1.suffix}}\\
+    \subfloat[][subcaption 2. \label{fig:sublabel1}]{\includegraphics[]{path/to/figure/2.suffix}}
+    \caption{Overall Caption subfloat with subcaption.}
+\label{fig:subfloat_subcaption}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{graph1}
+        \caption{$y=x$}
+        \label{fig:y equals x}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{graph2}
+        \caption{$y=3sinx$}`'
+        \label{fig:three sin x}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{graph3}
+        \caption{$y=5/x$}
+        \label{fig:five over x}
+    \end{subfigure}
+       \caption{Three simple graphs}
+       \label{fig:three graphs}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \subcaptionbox{Subcaption A}{\includegraphics[width=0.20\textwidth]{example-image-a}}%
+    \hfill
+    \subcaptionbox{Subcaption B}{\includegraphics[width=0.20\textwidth]{example-image-b}}%
+    \hfill
+    \subcaptionbox{Subcaption C}{\includegraphics[width=0.20\textwidth]{example-image-c}}%
+    \hfill
+    \subcaptionbox{Subcaption D}{\includegraphics[width=0.20\textwidth]{example-image}}%
+    \caption{Caption}
+\end{figure}
