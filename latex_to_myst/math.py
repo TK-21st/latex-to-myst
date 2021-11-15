@@ -10,6 +10,7 @@ from functools import partial
 import panflute as pf
 from latex_to_myst.helpers import (
     create_directive_block,
+    create_generic_div_block,
     remove_emph,
     stringify_until_match,
     SUPPORTED_AMSTHM_BLOCKS,
@@ -191,8 +192,10 @@ def action(elem: pf.Element, doc: pf.Doc = None):
     """Math Actions"""
     if isinstance(elem, pf.Div):
         if elem.classes:
-            return create_amsthm_blocks(elem, doc)
-        return elem
+            if any([k in elem.classes for k in SUPPORTED_AMSTHM_BLOCKS]):
+                return create_amsthm_blocks(elem, doc)
+            else:
+                return create_generic_div_block(elem, doc)
 
     if isinstance(elem, pf.Math):
         if elem.format == "DisplayMath":
