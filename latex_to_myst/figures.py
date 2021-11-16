@@ -48,7 +48,7 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Directive Block"""
     if not isinstance(elem, pf.Image):
         return
-    url = elem.url  # f"../{elem.url}"
+    url = elem.url
     label = elem.identifier
     attr = elem.attributes
     attr_str = ""
@@ -92,7 +92,7 @@ def _create_subplots_from_para(elem: pf.Para, doc):
         if isinstance(e, pf.LineBreak):
             start_new_row = True
         if isinstance(e, pf.Image):
-            image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
+            image_id = f"figure{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
                 image_id += f":{e.identifier}"
             image_ids.append(image_id)
@@ -125,7 +125,7 @@ def _create_subplots_from_table(elem: pf.Table, doc):
             start_new_row = True
             return
         if isinstance(e, pf.Image):
-            image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
+            image_id = f"figure{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
                 image_id += f":{e.identifier}"
             assert image_id not in doc.metadata["substitutions"].content
