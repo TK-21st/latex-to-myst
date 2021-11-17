@@ -180,8 +180,7 @@ def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
         identifier = re.findall(r"\\label\{([^\}]+)\}", elem.text)[0]
         content = content.replace("\label{%s}" % identifier, "")
 
-    if identifier is not None:
-        elem.attributes["label"] = identifier
+    elem.identifier = identifier
 
     return create_directive_block(
         elem, doc, [pf.RawInline(content, format="markdown")], "math", pf.Span

@@ -221,8 +221,12 @@ def create_directive_block(
     #   prioritize 'name' over 'label' since more blocks use name as key for
     #   identifier
     if hasattr(elem, "attributes") and elem.attributes is not None:
-        identifier = elem.attributes.pop("label", identifier)
-        identifier = elem.attributes.pop("name", identifier)
+        _label = elem.attributes.pop("label", identifier)
+        if _label:
+            identifier = _label
+        _name = elem.attributes.pop("name", identifier)
+        if _name:
+            identifier = _name
     # 2. look for identifier, if identifier is found, remove everything
     if hasattr(elem, "identifier") and elem.identifier is not None:
         identifier = elem.identifier
@@ -240,9 +244,9 @@ def create_directive_block(
 
     # set attributes of the block
     if get_element_type(elem) in ["displaymath", "amsthm"]:
-        attr_str = f':label: "{identifier}"\n'
+        attr_str = f":label: {identifier}\n"
     else:
-        attr_str = f':name: "{identifier}"\n'
+        attr_str = f":name: {identifier}\n"
     if hasattr(elem, "attributes") and elem.attributes is not None:
         for name, val in elem.attributes.items():
             attr_str += f":{name}: {val}\n"
