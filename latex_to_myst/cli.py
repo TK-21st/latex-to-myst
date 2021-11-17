@@ -105,7 +105,7 @@ def main():
                     finalize=finalize if n == len(ACTIONS) - 1 else None,
                 )
             except Exception as e:
-                logging.error("Parsing failed")
+                logging.error(e, exc_info=True)
 
         output_stream.write(
             pf.convert_text(

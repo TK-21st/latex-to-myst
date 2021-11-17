@@ -33,6 +33,8 @@ def action(elem: pf.Element, doc: pf.Doc = None):
                 logger.error(f"Link to target type {target_type} not understood.")
             else:
                 logger.error(f"Link to target {target} not found.")
+                # use `{ref}` to catch all
+                return pf.RawInline("{ref}`%s`" % target, format="markdown")
 
 
 def main(doc: pf.Doc):

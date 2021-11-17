@@ -13,6 +13,7 @@ from latex_to_myst.helpers import (
     create_generic_div_block,
     remove_emph,
     stringify_until_match,
+    TERMINAL_SIZE,
     SUPPORTED_AMSTHM_BLOCKS,
 )
 
@@ -68,6 +69,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
             return e
 
         elem.walk(get_identifier)
+    elem.identifier = identifier
 
     # DEBUG: always use the first one, this could be wrong or use one
     # that's not supported
@@ -79,6 +81,8 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
         )
     block_type = block_type[0]
     nonumber = any([k == "nonumber" for k in elem.classes])
+    if nonumber:
+        elem.attributes["nonumber"] = ""
     label = ""
     elem.walk(remove_emph)
 
@@ -90,25 +94,32 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
         pattern = fr"({block_type.capitalize()}\ [0-9|\.\ ]*)"
         pattern_with_title = pattern + r"\(([^\)]*)\)\.?"
 
-        if not re.findall(pattern, pf.stringify(elem.content[0])):
+        # check first that the pattern is found
+        if not re.findall(pattern, pf.stringify(elem)):
             logger.warning(
                 (
-                    f"Attempted to parse amsthm label in following element but none found\n"
-                    "----------------------------------------------\n"
-                    f"{elem}"
-                    "\n----------------------------------------------\n"
+                    "Attempted to parse amsthm label in following element "
+                    "but none found. This shouldn't happen with pandoc 2.11+ since "
+                    "a pattern of Theorem 1.1. (Name) is always generated."
                 )
             )
+            logger.warning(
+                "-" * (TERMINAL_SIZE.columns - 8)
+            )  # subtract 8 for  "[DEBUG] "
+            logger.warning(f"{elem}")
+            logger.warning(
+                "-" * (TERMINAL_SIZE.columns - 8)
+            )  # subtract 8 for  "[DEBUG] "
         else:
-            pat = re.findall(pattern_with_title, pf.stringify(elem.content[0]))
             pat_to_remove = None
-            if pat:
-                pat_to_remove = re.findall(
-                    f"({pattern_with_title})", pf.stringify(elem.content[0])
-                )[0][0]
-                label = pat[0][1]
+            pat_with_title = re.search(f"({pattern_with_title})", pf.stringify(elem))
+
+            if pat_with_title:
+                pat_to_remove = pat_with_title.group()
+                label = pat_with_title.groups()[-1]
             else:
-                pat_to_remove = re.findall(pattern, pf.stringify(elem.content[0]))[0]
+                pat_no_title = re.search(pattern, pf.stringify(elem))
+                pat_to_remove = pat_no_title.group()
                 label = ""
 
             # remove the label from the content of the block
@@ -137,22 +148,14 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
                 else:
                     logger.error(f"{pat_to_remove} not found.")
 
-    # create content of the Div
-    content = []
-    if identifier:
-        content.append(pf.RawBlock(f":label: {identifier}", format="markdown"))
-    if nonumber:
-        content.append(pf.RawBlock(":nonumber:" if nonumber else "", format="markdown"))
-    content += elem.content
-
     # create block
     try:
         return create_directive_block(
-            elem, doc, content, "prf:%s" % block_type, pf.Div, label=label
+            elem, doc, elem.content, "prf:%s" % block_type, pf.Div, label=label
         )
     except Exception as e:
         # fail but do not raise
-        logger.error(elem)
+        logger.error(e, exc_info=True)
 
 
 def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
@@ -172,20 +175,17 @@ def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
 
     content = elem.text
     identifier = None
+    # parse and remove label from content
     if "\label" in pf.stringify(elem):
         identifier = re.findall(r"\\label\{([^\}]+)\}", elem.text)[0]
         content = content.replace("\label{%s}" % identifier, "")
-    content = [
-        pf.SoftBreak,
-        pf.RawInline(
-            f":label: {identifier}\n" if identifier is not None else "",
-            format="markdown",
-        ),
-        pf.SoftBreak,
-        pf.RawInline(content, format="markdown"),
-    ]
-    block = create_directive_block(elem, doc, content, "math", pf.Span)
-    return pf.Span(pf.Str("\n"), *block.content)
+
+    if identifier is not None:
+        elem.attributes["label"] = identifier
+
+    return create_directive_block(
+        elem, doc, [pf.RawInline(content, format="markdown")], "math", pf.Span
+    )
 
 
 def action(elem: pf.Element, doc: pf.Doc = None):

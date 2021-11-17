@@ -2,7 +2,12 @@
 import re
 import logging
 import panflute as pf
-from latex_to_myst.helpers import get_element_type, is_directive_block, directive_level
+from latex_to_myst.helpers import (
+    get_element_type,
+    is_directive_block,
+    directive_level,
+    TERMINAL_SIZE,
+)
 from latex_to_myst.figures import action as figure_action
 from latex_to_myst.math import action as math_action
 from latex_to_myst.hyperlink import action as link_action
@@ -25,32 +30,39 @@ def finalize(doc: pf.Doc):
 
 
 def prepare(doc: pf.Doc):
-    # determine level of blocks
-    block_levels = {}
+    logger.info("Preparing document for processing...")
 
-    def get_level(e, d):
+    # determine level of blocks
+    logger.info("Parsing nested levels of directive blocks.")
+    doc.element_levels = {}
+
+    def get_level(e, doc):
         if is_directive_block(e):
             level = directive_level(e, doc)
-            block_levels[e] = level
+            doc.element_levels[e] = level
 
     doc.walk(get_level)
-    doc.element_levels = block_levels
 
     # determine labels of blocks for hyperlinks
-    block_labels = {}
+    logger.info("Parsing labels for directive blocks.")
+    doc.element_labels = {}
 
     def gather_labels(e, doc):
+        if get_element_type(e) == "displaymath":
+            label_in_text = re.search(r"\\label\{([^\}]*)\}", e.text)
+            if label_in_text:
+                (label,) = label_in_text.groups()
+                doc.element_labels[label] = e
+
         if hasattr(e, "identifier"):
             if e.identifier:
-                block_labels[e.identifier] = e
-        elif get_element_type(e) == "displaymath":
-            label = "eqn"
-            if "\label" in pf.stringify(e):
-                label = re.findall(r"\\label\{([^\}]+)\}", e.text)[0]
-            block_labels[label] = e
+                doc.element_labels[e.identifier] = e
 
     doc.walk(gather_labels)
-    doc.element_labels = block_labels
+    logger.debug("Discovered Labels")
+    logger.debug("-" * (TERMINAL_SIZE.columns - 8))  # subtract 8 for  "[DEBUG] "
+    logger.debug(list(doc.element_labels.keys()))
+    logger.debug("-" * (TERMINAL_SIZE.columns - 8))  # subtract 8 for  "[DEBUG] "
 
     doc.section_labels_to_insert = {}
 
