@@ -244,7 +244,10 @@ def create_directive_block(
 
     # set attributes of the block
     if get_element_type(elem) in ["displaymath", "amsthm"]:
-        attr_str = f":label: {identifier}\n"
+        if block_type == "prf:proof":
+            attr_str = ""
+        else:
+            attr_str = f":label: {identifier}\n"
     else:
         attr_str = f":name: {identifier}\n"
     if hasattr(elem, "attributes") and elem.attributes is not None:
