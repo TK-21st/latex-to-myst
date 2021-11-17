@@ -50,10 +50,10 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
         return
     url = elem.url
     for name, val in elem.attributes.items():
-        if name in ["width", "height"]:
+        if name == "width":
             # replace width with ratio
             _match = re.search(
-                r"([0-9|.]*)((?:\\textheight|\\lineheight|\\textwidth|\\linewidth))",
+                r"([0-9|.]*)((?:\\textwidth|\\linewidth))",
                 val,
             )
             if _match:
@@ -63,6 +63,12 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
                 else:
                     val = "100%"
                 elem.attributes[name] = val
+        if name == "height":
+            if re.search(
+                r"([0-9|.]*)((?:\\textheight|\\lineheight|\\textwidth|\\linewidth))",
+                val,
+            ):
+                del elem.attributes[name]
 
     return create_directive_block(elem, doc, elem.content, "figure", pf.Span, label=url)
 
@@ -128,10 +134,12 @@ def _create_subplots_from_para(elem: pf.Para, doc: pf.Doc):
         if isinstance(e, pf.Image):
             image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
-                image_id += f":{e.identifier}"
+                image_id += f"-{e.identifier}"
             if image_id in doc.metadata["substitutions"].content:
                 logger.error(f"Image ID {image_id} already exists, skipping.")
                 continue
+            image_id = image_id.replace(":", "-")
+            image_id = image_id.replace("-", "")
             # store img in images for substitutions
             images[image_id] = create_image(e, doc)
             if start_new_row:
@@ -163,7 +171,9 @@ def _create_subplots_from_table(elem: pf.Table, doc: pf.Doc):
         if isinstance(e, pf.Image):
             image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
-                image_id += f":{e.identifier}"
+                image_id += f"-{e.identifier}"
+            image_id = image_id.replace(":", "-")
+            image_id = image_id.replace("-", "")
             assert image_id not in doc.metadata["substitutions"].content
             images[image_id] = create_image(e, doc)
             if start_new_row:
