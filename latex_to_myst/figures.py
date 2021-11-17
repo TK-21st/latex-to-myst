@@ -49,74 +49,110 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     if not isinstance(elem, pf.Image):
         return
     url = elem.url
-    label = elem.identifier
-    attr = elem.attributes
-    attr_str = ""
-    for name, val in attr.items():
-        if name == "height":
-            continue
-        _match = re.findall(r"([0-9|.]*)(\\textwidth)", val)
-        if _match:
-            if _match[0][0]:
-                val = f"{str(int(float(_match[0][0])*100))}%"
-            else:
-                val = "100%"
-        _match = re.findall(r"([0-9|.]*)(\\linewidth)", val)
-        if _match:
-            if _match[0][0]:
-                val = f"{str(int(float(_match[0][0])*100))}%"
-            else:
-                val = "100%"
-        attr_str += f":{name}: {val}\n"
+    for name, val in elem.attributes.items():
+        if name in ["width", "height"]:
+            # replace width with ratio
+            _match = re.search(
+                r"([0-9|.]*)((?:\\textheight|\\lineheight|\\textwidth|\\linewidth))",
+                val,
+            )
+            if _match:
+                _scale, _ = _match.groups()
+                if _scale:
+                    val = f"{float(_scale)*100:.0f}%"
+                else:
+                    val = "100%"
+                elem.attributes[name] = val
 
-    if pf.stringify(elem) == "image":  # remove default caption
-        caption = []
+    return create_directive_block(elem, doc, elem.content, "figure", pf.Span, label=url)
+
+
+def _gather_subplot_identifiers(elem: tp.Union[pf.Para, pf.Table], doc: pf.Doc):
+    """Gather all identifiers for superplot and subplots
+
+    For subplots, the label of the overall figure could be lost and propagated
+    to individual subfigures. Here, we check if that's the case, and assign
+    individual identifiers for each figure if that's the case.
+    """
+    if hasattr(elem, "identifier") and elem.identifier:
+        superfigure_identifier = elem.identifier
     else:
-        caption = elem.content
+        superfigure_identifier = None
+    subfigure_identifiers = {}
 
-    content = []
-    if label:
-        content.append(pf.RawInline(f":name: {label}\n", format="markdown"))
-    if attr_str:
-        content.append(pf.RawInline(f"{attr_str}", format="markdown"))
-    content += caption
-    return create_directive_block(elem, doc, content, "figure", pf.Span, label=url)
+    def gather_identifier(e, doc):
+        nonlocal subfigure_identifiers
+        if isinstance(e, pf.Image):
+            if hasattr(e, "identifier") and e.identifier:
+                subfigure_identifiers[e] = e.identifier
+
+    elem.walk(gather_identifier)
+
+    if len(set(subfigure_identifiers.values())) == 1 and superfigure_identifier is None:
+        # the superfigure identifier propgated to subfigures
+        superfigure_identifier = list(subfigure_identifiers.values())[0]
+        for n, e in enumerate(subfigure_identifiers.keys()):
+            e.identifier = f"{superfigure_identifier}-{n}"
+    elif (
+        len(set(subfigure_identifiers.values())) == 0
+        and superfigure_identifier is not None
+    ):
+        # the superfigure identifier is specified and subfigures have no identifier
+        #  use superfigure identifier + index for reference identifier of each figure
+        for n, e in enumerate(subfigure_identifiers.keys()):
+            e.identifier = f"{superfigure_identifier}-{n}"
+    elif (
+        len(set(subfigure_identifiers.values())) == 0 and superfigure_identifier is None
+    ):
+        ctr = 0
+        superfigure_identifier = f"subplots-{ctr}"
+        while superfigure_identifier in doc.element_labels:
+            ctr = 0
+            superfigure_identifier = f"subplots-{ctr}"
+    else:
+        # do nothing
+        pass
+    elem.identifier = superfigure_identifier
+    return elem
 
 
-def _create_subplots_from_para(elem: pf.Para, doc):
+def _create_subplots_from_para(elem: pf.Para, doc: pf.Doc):
     """Create Subplot using list-table and return table and substitutions to put in header"""
-    image_ids = []
+    elem = _gather_subplot_identifiers(elem, doc)
     image_content = []
+    images = {}
     start_new_row = True
     for n, e in enumerate(elem.content):
         if isinstance(e, pf.LineBreak):
             start_new_row = True
         if isinstance(e, pf.Image):
-            image_id = f"figure{len(doc.metadata['substitutions'].content)}"
+            image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
                 image_id += f":{e.identifier}"
-            image_ids.append(image_id)
             if image_id in doc.metadata["substitutions"].content:
                 logger.error(f"Image ID {image_id} already exists, skipping.")
                 continue
-            img = create_image(e, doc)
-            doc.metadata["substitutions"].content[image_id] = pf.MetaInlines(img)
+            # store img in images for substitutions
+            images[image_id] = create_image(e, doc)
             if start_new_row:
                 image_content.append(
-                    pf.RawInline("* - {{%s}}\n" % image_id, format="markdown")
+                    pf.RawInline("* - {{ %s }}\n" % image_id, format="markdown")
                 )
                 start_new_row = False
             else:
                 image_content.append(
-                    pf.RawInline("  - {{%s}}\n" % image_id, format="markdown")
+                    pf.RawInline("  - {{ %s }}\n" % image_id, format="markdown")
                 )
-    return image_content
+    return image_content, images
 
 
-def _create_subplots_from_table(elem: pf.Table, doc):
+def _create_subplots_from_table(elem: pf.Table, doc: pf.Doc):
     """Create Subplot using list-table and return table and substitutions to put in header"""
+    elem = _gather_subplot_identifiers(elem, doc)
+
     start_new_row = True
     image_content = []
+    images = {}
 
     def walk_table_of_figures(e, doc):
         nonlocal start_new_row
@@ -125,12 +161,11 @@ def _create_subplots_from_table(elem: pf.Table, doc):
             start_new_row = True
             return
         if isinstance(e, pf.Image):
-            image_id = f"figure{len(doc.metadata['substitutions'].content)}"
+            image_id = f"figure-{len(doc.metadata['substitutions'].content)}"
             if e.identifier:
                 image_id += f":{e.identifier}"
             assert image_id not in doc.metadata["substitutions"].content
-            img = create_image(e, doc)
-            doc.metadata["substitutions"].content[image_id] = pf.MetaInlines(img)
+            images[image_id] = create_image(e, doc)
             if start_new_row:
                 image_content.append(
                     pf.RawInline("* - {{%s}}\n" % image_id, format="markdown")
@@ -143,7 +178,7 @@ def _create_subplots_from_table(elem: pf.Table, doc):
         return
 
     elem.walk(walk_table_of_figures)
-    return image_content
+    return image_content, images
 
 
 def create_subplots(
@@ -154,28 +189,26 @@ def create_subplots(
         doc.metadata["substitutions"] = {}
 
     if isinstance(elem, pf.Para):
-        image_content = _create_subplots_from_para(elem, doc)
+        image_content, sub_images = _create_subplots_from_para(elem, doc)
     elif isinstance(elem, pf.Table):
-        image_content = _create_subplots_from_table(elem, doc)
+        image_content, sub_images = _create_subplots_from_table(elem, doc)
     else:
         raise TypeError(
             f"Element of type {type(elem)} not supported, need to be Para or Table."
         )
 
-    label = None
-    if hasattr(elem, "identifier"):
-        label = elem.identifier
+    # store subfigures in metadata
+    for image_id, img in sub_images.items():
+        while pf.stringify(img).startswith("\n"):
+            img.content = img.content[1:]
+        while pf.stringify(img).startswith("\r"):
+            img.content = img.content[1:]
+        doc.metadata["substitutions"].content[image_id] = pf.MetaInlines(img)
 
-    caption = ""
-    if hasattr(elem, "title"):
-        caption = elem.title
-
-    content = [
-        pf.RawInline(f"\n:label: {label}" if label else "\n", format="markdown"),
-        *image_content,
-    ]
+    # get caption of overall figure
+    caption = pf.stringify(elem)
     return create_directive_block(
-        elem, doc, content, "list-table", pf.Para, label=caption
+        elem, doc, image_content, "list-table", pf.Para, label=caption
     )
 
 
@@ -184,12 +217,16 @@ def action(elem: pf.Element, doc: pf.Doc = None):
     if isinstance(elem, pf.Para):
         if elem_has_multiple_figures(elem):
             logger.debug("Creating subfigure from Para.")
+            logger.debug(elem)
+            logger.debug(pf.stringify(elem))
             return create_subplots(elem, doc)
         return elem
 
     if isinstance(elem, pf.Table):
         if elem_has_multiple_figures(elem):
             logger.debug("Creating subfigure from Table.")
+            logger.debug(elem)
+            logger.debug(pf.stringify(elem))
             return create_subplots(elem, doc)
         return elem
 
