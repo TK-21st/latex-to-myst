@@ -217,16 +217,16 @@ def action(elem: pf.Element, doc: pf.Doc = None):
     if isinstance(elem, pf.Para):
         if elem_has_multiple_figures(elem):
             logger.debug("Creating subfigure from Para.")
-            logger.debug(elem)
-            logger.debug(pf.stringify(elem))
+            # logger.debug(elem)
+            # logger.debug(pf.stringify(elem))
             return create_subplots(elem, doc)
         return elem
 
     if isinstance(elem, pf.Table):
         if elem_has_multiple_figures(elem):
             logger.debug("Creating subfigure from Table.")
-            logger.debug(elem)
-            logger.debug(pf.stringify(elem))
+            # logger.debug(elem)
+            # logger.debug(pf.stringify(elem))
             return create_subplots(elem, doc)
         return elem
 
