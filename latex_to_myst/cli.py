@@ -109,7 +109,11 @@ def main():
 
         output_stream.write(
             pf.convert_text(
-                doc, input_format="panflute", output_format="markdown", standalone=True
+                doc,
+                input_format="panflute",
+                output_format="markdown",
+                standalone=True,
+                extra_args=["--strip-comments"],
             )
         )
 
