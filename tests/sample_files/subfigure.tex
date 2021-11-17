@@ -60,3 +60,14 @@
     \subcaptionbox{Subcaption D}{\includegraphics[width=0.20\textwidth]{example-image}}%
     \caption{Caption}
 \end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=0.45\textwidth]{path/to/figure/1.suffix}&
+        \includegraphics[width=0.5\textwidth]{path/to/figure/2.suffix} \\
+        \text{a) Label 1} & \text{b) Label 2}
+    \end{tabular}
+    \caption{Overall Caption}
+    \label{fig:figure_in_table}
+\end{figure}
