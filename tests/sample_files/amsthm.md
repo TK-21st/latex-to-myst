@@ -1,7 +1,7 @@
 <div>
 
 ```{prf:theorem} 
-:label: "prf:theorem-0"
+:label: prf:theorem-0
 
 Unnamed theorem
 
@@ -12,7 +12,7 @@ Unnamed theorem
 <div>
 
 ```{prf:theorem} Named Theorem
-:label: "prf:theorem-1"
+:label: prf:theorem-1
 
 Named theorem
 
@@ -23,7 +23,7 @@ Named theorem
 <div>
 
 ```{prf:theorem} Named Theorem With Label
-:label: "thm:label"
+:label: thm:label
 
 Named theorem with label
 
@@ -34,18 +34,17 @@ Named theorem with label
 <div>
 
 `````{prf:theorem} Name 1
-:label: "prf:theorem-2"
+:label: prf:theorem-2
 
 Nested Theorem
 
 <div>
 
-````{prf:proof} 
-:label: "prf:proof-0"
+````{prf:proof}
 
 Proof Content
 ```{math} 
-:label: "math-0"
+:label: math-0
 c = 1
 ```
  ◻

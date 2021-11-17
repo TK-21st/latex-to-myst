@@ -1,17 +1,17 @@
 <div>
 
 `````{div} block
-:name: "div-2"
+:name: div-2
 
 <div>
 
 ````{div} block
-:name: "div-1"
+:name: div-1
 
 <div>
 
 ```{div} block
-:name: "div-0"
+:name: div-0
 
 A
 

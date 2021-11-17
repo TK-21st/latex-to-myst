@@ -1,16 +1,16 @@
 ```{math} 
-:label: "math-0"
+:label: eq:1
 a=1
 ```
 
 ```{math} 
-:label: "math-1"
+:label: math-0
 b=1
 ```
 
 With text around it
 ```{math} 
-:label: "math-2"
+:label: math-1
 b=1
 ```
 what should it be
@@ -18,6 +18,6 @@ what should it be
 $c=1$
 
 ```{math} 
-:label: "math-3"
+:label: math-2
 b = 1
 ```
