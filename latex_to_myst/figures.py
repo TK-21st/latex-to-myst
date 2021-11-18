@@ -49,7 +49,8 @@ def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     if not isinstance(elem, pf.Image):
         return
     url = elem.url
-    for name, val in elem.attributes.items():
+    for name in list(elem.attributes.keys()):
+        val = elem.attributes[name]
         if name == "width":
             # replace width with ratio
             _match = re.search(

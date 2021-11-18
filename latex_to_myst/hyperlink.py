@@ -14,6 +14,7 @@ def action(elem: pf.Element, doc: pf.Doc = None):
 
         if hasattr(elem, "attributes") and "reference" in elem.attributes:
             target = str(elem.attributes["reference"])
+
             elem.attributes = {}
             elem.url = target
 
