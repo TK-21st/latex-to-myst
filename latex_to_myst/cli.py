@@ -1,3 +1,5 @@
+"""Command Line Interface entry-point to latex2myst
+"""
 import io
 import argparse
 import logging
@@ -7,7 +9,28 @@ from .main import ACTIONS, prepare, finalize
 
 
 def _validate_file(path: str, file_ext: str, check_exist: bool = True) -> str:
-    """Validate file path according to file_ext"""
+    """Validate file path according to file_ext
+
+    Arguments:
+        path: a path to the file
+        file_ext: the desired extension of the file that starts with :code:`.`
+
+            .. note::
+
+                If :code:`path` does not have an extension, then the extension
+                is added to the path.
+
+        check_exist: whether to check if file exists in addition to checking
+          extension
+
+    Raises:
+        RuntimeError: Raised if
+          - :code:`check_exist=True` but file not found,
+          - extension mismatched between file and desired extension
+
+    Returns:
+        The path with extension.
+    """
     if not Path(path).suffix:
         path += file_ext
     if check_exist and not Path(path).exists():
@@ -60,7 +83,9 @@ def main():
     )
     args = parser.parse_args()
     logging.basicConfig(
-        format="[%(levelname)s] %(message)s", level=getattr(logging, args.log.upper())
+        format="[%(asctime)s|%(name)s|%(levelname)-8s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        level=getattr(logging, args.log.upper()),
     )
 
     if pf.tools.PandocVersion().version < (2, 11):
@@ -81,13 +106,16 @@ def main():
             with open(Path(fname), "r") as f:
                 macros += f.read()
 
+    # create input, output file handles
     fi = Path(_validate_file(args.file_in, ".tex"))
     fo = Path(_validate_file(args.file_out, ".md", check_exist=False))
 
     logging.info(f"Parsing Input File {fi}")
     logging.info(f"Additional Macros Provided: {macro_paths}")
     logging.info(f"Using Default Macros: {args.default_macros}")
-    logging.debug(f"Macros Used\n{macros} \n")
+    logging.debug("Macros Used:")
+    for m in macros.split("\n"):
+        logging.debug(f"\t{m}")
     with open(fi, "r") as input_stream, open(fo, "w") as output_stream:
         doc = pf.convert_text(
             macros + input_stream.read(),

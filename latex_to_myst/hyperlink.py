@@ -1,6 +1,6 @@
 import panflute as pf
 import logging
-from latex_to_myst.helpers import get_element_type
+from .helpers import get_element_type
 
 logger = logging.getLogger(__name__)
 

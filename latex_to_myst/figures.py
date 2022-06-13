@@ -1,15 +1,18 @@
 """Figures directives
 """
 import re
+import textwrap
 import logging
 import typing as tp
 import panflute as pf
-from latex_to_myst.helpers import create_directive_block, elem_has_multiple_figures
+import numpy as np
+from .helpers import elem_has_multiple_figures, break_long_string
+from latex_to_myst.directives import create_directive_block
 
 logger = logging.getLogger(__name__)
 
 
-def image_in_subplot(elem: pf.Image):
+def image_in_subplot(elem: pf.Image) -> bool:
     """Check if an image node is in subplot"""
     if isinstance(elem.parent, pf.Para):
         return elem_has_multiple_figures(elem.parent)
@@ -22,55 +25,35 @@ def image_in_subplot(elem: pf.Image):
     return False
 
 
-def break_long_string(string: str, max_len: int = 70, indent: int = 0) -> str:
-    """Break long string into shorter strings of max_len (with indent added)"""
-    import numpy as np
-
-    string = " ".join(
-        string.split(" ")
-    )  # convert multiple consecutive white spaces to single
-    content = string.split(" ")
-    str_len = [len(c) + 1 for c in content]  # +1 for whitespace
-    cum_len = np.cumsum(str_len)
-    block_idx = np.floor(cum_len / max_len).astype(int)
-    N_blocks = max(block_idx) + 1
-    content = np.array(content, dtype=str)
-    output = ""
-    for b in range(N_blocks):
-        (idx,) = np.where(block_idx == b)
-        new_line = " " * indent + " ".join(content[idx].tolist()) + "\n"
-        output += new_line
-    output.rstrip("\n")  # remove last newline
-    return output
-
-
 def create_image(elem: pf.Image, doc: pf.Doc = None) -> pf.Span:
     """Create Image Directive Block"""
     if not isinstance(elem, pf.Image):
         return
     url = elem.url
+    logger.debug(elem)
+    logger.debug(elem.attributes)
     for name in list(elem.attributes.keys()):
         val = elem.attributes[name]
-        if name == "width":
-            # replace width with ratio
+        if name == "width":  # replace width with ratio
             _match = re.search(
                 r"([0-9|.]*)((?:\\textwidth|\\linewidth))",
                 val,
             )
             if _match:
                 _scale, _ = _match.groups()
-                if _scale:
-                    val = f"{float(_scale)*100:.0f}%"
-                else:
-                    val = "100%"
-                elem.attributes[name] = val
-        if name == "height":
+                elem.attributes[name] = (
+                    f"{float(_scale)*100:.0f}%" if _scale else "100%"
+                )
+        if name == "height":  # ignore heights
             if re.search(
                 r"([0-9|.]*)((?:\\textheight|\\lineheight|\\textwidth|\\linewidth))",
                 val,
             ):
                 del elem.attributes[name]
-
+    logger.debug(elem)
+    logger.debug(elem.attributes)
+    logger.debug(elem.content)
+    logger.debug(url)
     return create_directive_block(elem, doc, elem.content, "figure", pf.Span, label=url)
 
 

@@ -1,19 +1,23 @@
 #!/usr/bin/env python
+"""Main entry point to document parser
+"""
 import re
 import logging
 import panflute as pf
-from latex_to_myst.helpers import (
+from .helpers import (
     get_element_type,
-    is_directive_block,
-    directive_level,
     TERMINAL_SIZE,
 )
-from latex_to_myst.figures import action as figure_action
-from latex_to_myst.math import action as math_action
-from latex_to_myst.hyperlink import action as link_action
-from latex_to_myst.basic import action as basic_action
+from .directives import is_directive_block, directive_level
+from .figures import action as figure_action
+from .math import action as math_action
+from .hyperlink import action as link_action
+from .basic import action as basic_action
 
 logger = logging.getLogger(__name__)
+
+# The following conversion actions are run upon processing a given
+# .tex file, and are executed _in this sequence_
 ACTIONS = (
     ("Math", math_action),
     ("Link", link_action),
@@ -59,17 +63,14 @@ def prepare(doc: pf.Doc):
                 doc.element_labels[e.identifier] = e
 
     doc.walk(gather_labels)
-    logger.debug("Discovered Labels")
-    logger.debug("-" * (TERMINAL_SIZE.columns - 8))  # subtract 8 for  "[DEBUG] "
-    logger.debug(list(doc.element_labels.keys()))
-    logger.debug("-" * (TERMINAL_SIZE.columns - 8))  # subtract 8 for  "[DEBUG] "
+    logger.debug(f"Discovered Labels: {list(doc.element_labels.keys())}")
 
     doc.section_labels_to_insert = {}
 
 
 def main(doc: pf.Doc = None):
     return pf.run_filters(
-        [math_action, link_action, figure_action, basic_action],
+        [act for _, act in ACTIONS],
         doc=doc,
         finalize=finalize,
         prepare=prepare,

@@ -1,16 +1,6 @@
-"""Collection of Helpers to create directive blocks consistent with MyST syntax
-
-The syntax for MyST `Directive Blocks`_ that is followed in this repository takes
-the form of::
-
-    ```{directivename} arg1 arg2
-    :key1: metadata1
-    :key2: metadata2
-    My directive content.
-    ```
-
-.. _`Directive Blocks`: https://jupyterbook.org/content/myst.html#directives
+"""Collection of Helper Functions
 """
+import textwrap
 import typing as tp
 import logging
 import shutil
@@ -18,6 +8,7 @@ import panflute as pf
 
 logger = logging.getLogger(__name__)
 
+MARKDOWN_LINEBREAK_ELEM = pf.RawInline("\n", format="markdown")
 TERMINAL_SIZE = shutil.get_terminal_size((80, 20))  # pass fallback
 SUPPORTED_AMSTHM_BLOCKS = [
     "proof",
@@ -35,6 +26,25 @@ SUPPORTED_AMSTHM_BLOCKS = [
     "observation",
     "proposition",
 ]
+
+
+def break_long_string(string: str, max_len: int = 70, indent: int = 0) -> str:
+    """Break long string into shorter strings of max_len (with indent added)"""
+    return textwrap.indent(
+        "\n".join(list(textwrap.wrap(string, max_len, break_long_words=False))),
+        " " * indent,
+    )
+
+
+def need_linebreak(elem: pf.Element) -> tp.Tuple[bool, bool]:
+    """Check if a linebreak needs to be inserted after (before) previous (next) node"""
+    lb_before = (elem.prev is not None) and (
+        not pf.stringify(elem.prev).endswith(("\r", "\n"))
+    )
+    lb_after = (elem.next is not None) and (
+        not pf.stringify(elem.next).startswith(("\r", "\n"))
+    )
+    return lb_before, lb_after
 
 
 def elem_has_multiple_figures(elem: pf.Element):
@@ -160,180 +170,54 @@ def stringify_until_match(
         raise StopIteration
 
 
-def create_generic_div_block(elem: pf.Element, doc: pf.Doc):
-    """Create a Generic Div that is not of a special type"""
-    classes = elem.classes
-    if not classes:
-        return elem
-
-    # do nothing if content is a special directive block
-    # DEBUG: Make this more robust
-    if not elem.content:
-        return elem
-    if isinstance(elem.content[0], pf.RawBlock):
-        return elem
-
-    if any([k in SUPPORTED_AMSTHM_BLOCKS for k in classes]):
-        logger.error("Attempt to create generic div block for amsthm block.")
-        return elem
-
-    return create_directive_block(
-        elem,
-        doc,
-        content=elem.content,
-        block_type="div",
-        create_using=pf.Div,
-        label=" ".join(classes),
-    )
-
-
-def create_directive_block(
+def get_block_identifier(
     elem: pf.Element,
     doc: pf.Doc,
-    content: tp.Iterable[pf.Element],
-    block_type: str,
-    create_using: tp.Union[pf.Para, pf.Span] = pf.Span,
-    label: str = "",
-) -> tp.Union[pf.Para, pf.Span]:
-    """Create a directive block as literal"""
-    if not is_directive_block(elem):
-        return elem
+    create_if_not_found: bool = False,
+    block_type: str = "",
+) -> str:
+    """find identifier of block, create one if none exists
 
-    # get level of block
-    try:
-        all_levels = doc.element_levels
-        level = all_levels[elem]
-    except KeyError:
-        logger.error("Element level not found")
-        level = directive_level(elem, doc)
-        doc.element_levels[elem] = level
-    except AttributeError:
-        logger.error("element_levels not initialized for Doc. Recomputing...")
-        level = directive_level(elem, doc)
-        doc.element_levels = {elem: level}
-    except Exception as e:
-        logger.error(e, exc_info=True)
-        return elem
+    Arguments:
+        elem:
+        doc:
+        create_if_not_found: create identifier if not found
+        block_type: the type of block for `elem`. Only applicable for when
+          `create_if_not_found` is `True`.
 
-    # find identifier of block, create one if none existsidentifier
-    identifier = None
-    # 1. look for label or name field in attributes.
+    Returns
+        A `str` identifier.
+    """
+    identifier = ""
+    # 1. look for identifier, if identifier is found, return immediately
+    if getattr(elem, "identifier", None):
+        return elem.identifier
+
+    # 2. look for label or name field in attributes.
     #   prioritize 'name' over 'label' since more blocks use name as key for
     #   identifier
-    if hasattr(elem, "attributes") and elem.attributes is not None:
+    if getattr(elem, "attributes", None):
         _label = elem.attributes.pop("label", identifier)
-        if _label:
-            identifier = _label
         _name = elem.attributes.pop("name", identifier)
-        if _name:
-            identifier = _name
-    # 2. look for identifier, if identifier is found, remove everything
-    if hasattr(elem, "identifier") and elem.identifier is not None:
-        identifier = elem.identifier
+        identifier = _name if _name else _label if _label else identifier
+        if identifier:
+            return identifier
+
     # 3. create a new identifier if none exists
-    if not identifier or identifier is None:
-        if not hasattr(doc, "element_labels"):
-            logger.error("element_labels not initialized for Doc. Re-initializing...")
-            doc.element_labels = {}
-        ctr = len([l for l in doc.element_labels.keys() if l.startswith(block_type)])
-        identifier = f"{block_type}-{ctr}"
-        while identifier in doc.element_labels:
-            ctr += 1
-            identifier = f"{block_type}-{ctr}"
-        doc.element_labels[identifier] = elem
-
-    # set attributes of the block
-    if get_element_type(elem) in ["displaymath", "amsthm"]:
-        if block_type == "prf:proof":
-            attr_str = ""
-        else:
-            attr_str = f":label: {identifier}\n"
-    else:
-        attr_str = f":name: {identifier}\n"
-    if hasattr(elem, "attributes") and elem.attributes is not None:
-        for name, val in elem.attributes.items():
-            attr_str += f":{name}: {val}\n"
-    # create directive block fences
-    fence_top = "`" * (level + 2) + "{%s} %s" % (block_type, label.strip(" \r\n"))
-    fence_bot = f"{'`'* (level + 2)}"
-    # header block should not have any empty lines within
-    header = "\n".join((f"{fence_top}\n" f"{attr_str}").split("\n")).strip(" \r\n")
-
-    def need_linebreak(neighbor, before=True):
-        if before:
-            if neighbor is not None:
-                if not pf.stringify(neighbor).endswith(("\r", "\n")):
-                    return True
-            return False
-        if neighbor is not None:
-            if not pf.stringify(neighbor).startswith(("\r", "\n")):
-                return True
-        return False
-
-    # create block
-    if create_using == pf.Div:
-        block_content = [
-            pf.RawBlock(header, format="markdown"),
-            *content,
-            pf.RawBlock(fence_bot, format="markdown"),
-        ]
-        create_using = pf.Div
-    else:
-        block_content = [
-            pf.RawInline("\n", format="markdown")
-            if need_linebreak(elem.prev)
-            else None,
-            pf.RawInline(f"{header}", format="markdown"),
-            pf.RawInline("\n", format="markdown"),
-            *content,
-            pf.RawInline("\n", format="markdown")
-            if need_linebreak(content[-1])
-            else None,
-            pf.RawInline(f"{fence_bot}", format="markdown"),
-            pf.RawInline("\n", format="markdown")
-            if need_linebreak(elem.next, False)
-            else None,
-        ]
-        block_content = [c for c in block_content if c is not None]
-    return create_using(*block_content)
-
-
-def is_directive_block(elem: pf.Element) -> bool:
-    """Check if an given element is a directive block"""
-    return (
-        (isinstance(elem, pf.Math) and elem.format == "DisplayMath")
-        or isinstance(elem, pf.Div)
-        or isinstance(elem, pf.Image)
-        or (isinstance(elem, pf.Para) and elem_has_multiple_figures(elem))
-        or (isinstance(elem, pf.Table) and elem_has_multiple_figures(elem))
-    )
-
-
-def directive_level(elem: pf.Element, doc: pf.Doc, starting_level: int = 0) -> int:
-    """Check the nested level of a directive block"""
-    if is_directive_block(elem):
-        starting_level += 1
-    for child in elem._children:
-        obj = getattr(elem, child)
-        if isinstance(obj, pf.Element):
-            return directive_level(obj, doc, starting_level)
-        elif isinstance(obj, pf.ListContainer):
-            if len(obj):
-                return max([directive_level(item, doc, starting_level) for item in obj])
-            else:
-                return starting_level
-        elif isinstance(obj, pf.DictContainer):
-            if len(obj):
-                return max(
-                    [
-                        directive_level(item, doc, starting_level)
-                        for item in obj.values()
-                    ]
+    if create_if_not_found:
+        if not identifier:
+            if not hasattr(doc, "element_labels"):
+                logger.error(
+                    "element_labels not initialized for Doc. Re-initializing..."
                 )
-            else:
-                return starting_level
-        elif obj is None:
-            return starting_level
-        else:
-            raise TypeError(type(obj))
-    return starting_level
+                doc.element_labels = {}
+            ctr = len(
+                [l for l in doc.element_labels.keys() if l.startswith(block_type)]
+            )
+            identifier = f"{block_type}-{ctr}"
+            # increment identifier until no more duplicates
+            while identifier in doc.element_labels:
+                ctr += 1
+                identifier = f"{block_type}-{ctr}"
+            doc.element_labels[identifier] = elem
+    return identifier

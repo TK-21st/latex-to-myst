@@ -8,14 +8,13 @@ import typing as tp
 import logging
 from functools import partial
 import panflute as pf
-from latex_to_myst.helpers import (
-    create_directive_block,
-    create_generic_div_block,
+from .helpers import (
     remove_emph,
     stringify_until_match,
     TERMINAL_SIZE,
     SUPPORTED_AMSTHM_BLOCKS,
 )
+from .directives import create_directive_block, create_generic_div_block
 
 logger = logging.getLogger(__name__)
 
@@ -86,6 +85,8 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     label = ""
     elem.walk(remove_emph)
 
+    logger.debug(f"block_type {block_type}")
+
     # cleanup the content of the amsthm block to remove things like
     # `Theorem 1.1 (Name of Theorem)`.
     if block_type == "proof":
@@ -97,19 +98,11 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
         # check first that the pattern is found
         if not re.findall(pattern, pf.stringify(elem)):
             logger.warning(
-                (
-                    "Attempted to parse amsthm label in following element "
-                    "but none found. This shouldn't happen with pandoc 2.11+ since "
-                    "a pattern of Theorem 1.1. (Name) is always generated."
-                )
+                "Attempted to parse amsthm label in following element "
+                "but none found. This shouldn't happen with pandoc 2.11+ since "
+                "a pattern of Theorem 1.1. (Name) is always generated."
             )
-            logger.warning(
-                "-" * (TERMINAL_SIZE.columns - 8)
-            )  # subtract 8 for  "[DEBUG] "
             logger.warning(f"{elem}")
-            logger.warning(
-                "-" * (TERMINAL_SIZE.columns - 8)
-            )  # subtract 8 for  "[DEBUG] "
         else:
             pat_to_remove = None
             pat_with_title = re.search(f"({pattern_with_title})", pf.stringify(elem))
@@ -148,6 +141,7 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
                 else:
                     logger.error(f"{pat_to_remove} not found.")
 
+    logger.debug(elem.content)
     # create block
     try:
         return create_directive_block(
@@ -174,14 +168,12 @@ def create_displaymath(elem: pf.Math, doc: pf.Doc = None) -> pf.Span:
         return elem
 
     content = elem.text
-    identifier = None
-    # parse and remove label from content
-    if "\label" in pf.stringify(elem):
-        identifier = re.findall(r"\\label\{([^\}]+)\}", elem.text)[0]
+    identifier = re.search(r"\\label\{([^\}]+)\}", elem.text)
+    if identifier:
+        identifier = identifier.group(1)
         content = content.replace("\label{%s}" % identifier, "")
-
-    elem.identifier = identifier
-
+        elem.identifier = identifier
+    logger.debug(f"DisplayMath Identifier: {elem.identifier}")
     return create_directive_block(
         elem, doc, [pf.RawInline(content, format="markdown")], "math", pf.Span
     )

@@ -1,10 +1,12 @@
 ===========================
 LaTeX to MyST Pandoc Filter
 ===========================
-Latex-to-MyST implements a pandoc filter that converts a subset of LaTeX
+Latex-to-MyST converts a given :code:`.tex` file into a :code:`.md` file using MyST syntax.
+
+To do this, the package implements a pandoc filter that converts a subset of LaTeX
 environments to MyST directives. Although it is probably more pandoc compatible
-to write a custom pandoc writer instead of using `RawBlocks` and `RawInline` to
-mimics one, the existence of `panflute`_ makes it much easier for python
+to write a custom pandoc writer instead of using :code:`RawBlocks` and :code:`RawInline` to
+mimics one, the existence of :code:`panflute`_ makes it much easier for python
 developers like me to work with filters instead of writers.
 
 To use this filter, install the package by::
@@ -42,7 +44,7 @@ There are some `known issues`_ need to be addressed.
 
 Credits
 -------
-This module uses `panflute`_ heavily.
+Under the hood Latex-to-MyST uses `panflute`_ to interface with `pandoc`_.
 
 .. _`panflute`: https://github.com/sergiocorreia/panflute
 .. _`Sphinx-proof Directives`: https://sphinx-proof.readthedocs.io/en/latest/syntax.html#collection-of-directives

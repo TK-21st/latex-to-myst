@@ -2,8 +2,7 @@
 """
 import logging
 import panflute as pf
-
-from latex_to_myst.helpers import create_directive_block, create_generic_div_block
+from .directives import create_directive_block, create_generic_div_block
 
 logger = logging.getLogger(__name__)
 
