@@ -703,3 +703,4 @@ docs/latex_to_myst.rst
 docs/latex_to_myst.**.rst
 tests/test.md
 test.md
+tests/sample_files/*_test.md

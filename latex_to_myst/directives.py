@@ -171,11 +171,9 @@ def create_directive_block(
         need_before, need_after = need_linebreak(elem)
         block_content = [MARKDOWN_LINEBREAK_ELEM] if need_before else []
         block_content = [
-            pf.RawInline(header, format="markdown"),
-            MARKDOWN_LINEBREAK_ELEM,
+            pf.RawInline(header + "\n", format="markdown"),
             *content,
-            MARKDOWN_LINEBREAK_ELEM,
-            pf.RawInline(footer, format="markdown"),
+            pf.RawInline("\n" + footer, format="markdown"),
         ]
         if need_after:
             block_content.append(MARKDOWN_LINEBREAK_ELEM)

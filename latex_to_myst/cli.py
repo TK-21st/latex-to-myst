@@ -141,7 +141,12 @@ def main():
                 input_format="panflute",
                 output_format="markdown",
                 standalone=True,
-                extra_args=["--strip-comments"],
+                extra_args=[
+                    "--strip-comments",
+                    "-t",
+                    "markdown-raw_html-native_divs" # Disable some output extension to remove <div> around
+                                                    # directives, See https://stackoverflow.com/a/35812743
+                ],
             )
         )
 

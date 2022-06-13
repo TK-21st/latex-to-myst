@@ -13,6 +13,7 @@ from .helpers import (
     stringify_until_match,
     TERMINAL_SIZE,
     SUPPORTED_AMSTHM_BLOCKS,
+    get_block_identifier
 )
 from .directives import create_directive_block, create_generic_div_block
 
@@ -45,30 +46,29 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     """
     if not any([k in elem.classes for k in SUPPORTED_AMSTHM_BLOCKS]):
         logger.error(
-            (
-                f"Div with class {elem.classes} not supported. "
-                f"Use one of {SUPPORTED_AMSTHM_BLOCKS}."
-            )
+            f"Div with class {elem.classes} not supported. "
+            f"Use one of {SUPPORTED_AMSTHM_BLOCKS}."
         )
         return elem
 
     # find identifier in the div
     # sometimes the label for a given div can be a separate element
     # instead of a string name directly for the element.
-    identifier = elem.identifier
-    if not identifier:
+    # identifier = elem.identifier
+    # if not identifier:
 
-        def get_identifier(e, doc):
-            nonlocal identifier
-            if isinstance(e, pf.Span):
-                if hasattr(e, "attributes"):
-                    if "label" in e.attributes:
-                        identifier = e.attributes["label"]
-                        return []
-            return e
+    #     def get_identifier(e, doc):
+    #         nonlocal identifier
+    #         if isinstance(e, pf.Span):
+    #             if hasattr(e, "attributes"):
+    #                 if "label" in e.attributes:
+    #                     identifier = e.attributes["label"]
+    #                     return []
+    #         return e
 
-        elem.walk(get_identifier)
-    elem.identifier = identifier
+    #     elem.walk(get_identifier)
+    # elem.identifier = identifier
+    elem.identifier = get_block_identifier(elem, doc, create_if_not_found=False)
 
     # DEBUG: always use the first one, this could be wrong or use one
     # that's not supported
@@ -144,6 +144,9 @@ def create_amsthm_blocks(elem: pf.Div, doc: pf.Doc = None) -> pf.Para:
     logger.debug(elem.content)
     # create block
     try:
+        # return create_directive_block(
+        #     elem, doc, elem.content, "prf:%s" % block_type, pf.Div, label=label
+        # )
         return create_directive_block(
             elem, doc, elem.content, "prf:%s" % block_type, pf.Div, label=label
         )
